@@ -35,6 +35,8 @@ base_address_dpcm_note_to_loop_pitch_index: .res 2
 apu_data_ready: .res 1
 apu_square_1_old: .res 1
 apu_square_2_old: .res 1
+; TODO: do I have to track pulse and/or sawtooth waves like the square channels above?
+
 .ifdef FEATURE_DPCM
 apu_dpcm_state: .res 1
 .endif
@@ -42,10 +44,13 @@ apu_dpcm_state: .res 1
 song_list_address: .res 2
 sfx_list_address: .res 2
 song_address: .res 2
+
+; TODO: increase this to include VRC6 channels (at least 3 I think)
 apu_register_sets: .res 20
 
 .segment "BSS"
 
+; TODO: increase MAX_STREAMS by 3
 stream_flags:                  .res MAX_STREAMS
 stream_note:                   .res MAX_STREAMS
 stream_note_length_lo:         .res MAX_STREAMS
@@ -171,6 +176,8 @@ done:
     ;Enable square 1, square 2, triangle and noise.
     lda #%00001111
     sta $4015
+    
+    ; TODO: VRC6 enable
 
     ;Ensure no apu data is uploaded yet.
     lda #0
@@ -371,6 +378,7 @@ channel_callback_table_lo:
     .ifdef FEATURE_DPCM
     .byte <dpcm_play_note
     .endif
+    ; TODO: add entries for 3 VRC6 channels
 
 channel_callback_table_hi:
     .byte >square_1_play_note
@@ -380,6 +388,7 @@ channel_callback_table_hi:
     .ifdef FEATURE_DPCM
     .byte >dpcm_play_note
     .endif
+    ; TODO: add entries for 3 VRC6 channels
 
 stream_callback_table_lo:
     .byte <stream_set_length_s
@@ -976,6 +985,8 @@ note_already_played:
 
 .endproc
 .endif
+
+; TODO: add play_note subroutines for 2 pulses (use same technique as square channels) and 1 sawtooth
 
 .ifdef FEATURE_ARPEGGIOS
 
@@ -1588,6 +1599,8 @@ no_noise:
     sta stream_tempo_counter_hi,x
 no_dpcm:
     .endif
+    
+    ; TODO: add logic for pulse and sawtooth channels
 
     dec sound_disable_update
 
@@ -1817,6 +1830,8 @@ no_noise:
     sta apu_dpcm_state
 no_dpcm:
    .endif
+   
+   ; TODO: add logic for pulse and sawtooth channels
 
 no_more_sfx_streams_available:
 
@@ -2202,6 +2217,8 @@ note_length_counter_not_zero:
     lda #0
     sta apu_register_sets+19
     .endif
+    
+    ; TODO: initialize pulse and sawtooths
 
     rts
 .endproc
@@ -2303,6 +2320,7 @@ skip:
     rts
 dpcm_nop:
     rts
+; TODO: add logic for pulse and sawthooths
 
 dpcm_state_callback_lo:
     .byte <(dpcm_nop-1)
