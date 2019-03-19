@@ -317,6 +317,7 @@ def main():
     with open(input_file) as f:
         lines = f.readlines()
 
+    # TODO: What other keywords do we have to look for to support VRC6?
     #Look for MACRO, INST2A03, TRACK, COLUMNS, ORDER, PATTERN, ROW, DPCMDEF, DPCM, KEYDPCM
     current_pattern = None
     current_track = None
@@ -683,6 +684,7 @@ def main():
             master_stream = []
             streams = []
 
+            # TODO: add VRC6 channels
             for channel in ["square1", "square2", "triangle", "noise", "dpcm"]:
 
                 unique_orders = set()
