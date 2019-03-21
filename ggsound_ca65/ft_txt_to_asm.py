@@ -3,6 +3,31 @@ import sys
 
 ARPEGGIOS_ENABLED = True
 LINE_WIDTH = 64
+expansion_mask = 0
+expansions = []
+expansion_type_id_to_index = {"VRC6" : 0,
+                              "VRC7": 1,
+                              "FDS": 2,
+                              "MMC5": 3,
+                              "N163": 4,
+                              "S5B": 5}
+expansion_type_ids = ("VRC6",
+                      "VRC7",
+                      "FDS",
+                      "MMC5",
+                      "N163",
+                      "S5B")
+expansion_channels = {"VRC6" : ["vrc6_square1", "vrc6_square2", "vrc6_saw"],
+                      "VRC7": [], # TODO: other expansion chips
+                      "FDS": [], 
+                      "MMC5": [],
+                      "N163": [],
+                      "S5B": []}                         
+channels = ["square1",
+            "square2",
+            "triangle",
+            "noise",
+            "dpcm"]
 macros = {"volume": [],
           "arpeggio": [],
           "pitch": [],
@@ -34,7 +59,6 @@ lo_byte_operator = "<"
 hi_byte_operator = ">"
 define_byte_directive = "  .byte "
 define_word_directive = "  .word "
-
 
 #Splits a note string, formats the note and converts the instrument index to an integer
 def process_note(note):
@@ -293,6 +317,9 @@ def sanitize_label(label):
 
 
 def main():
+    global expansion_mask
+    global expansions
+    global channels
     global macros
     global macro_id_to_index
     global instruments
@@ -325,7 +352,18 @@ def main():
     for line in lines:
         split_line = line.split()
         if len(split_line) >= 1:
-            if split_line[0] == "MACRO":
+            if split_line[0] == "EXPANSION":
+                expansion_split_line = line.split()
+                expansion_mask = int(expansion_split_line[1])
+                for i in range(len(expansion_type_ids)):
+                    if (expansion_mask & (1 << i)) != 0:
+                        expansion_type_id = expansion_type_ids[i]
+
+                        expansions.append(expansion_type_id)
+                        channels.extend(expansion_channels[expansion_type_id])
+
+            if split_line[0] == "MACRO" \
+            or split_line[0] == "MACROVRC6":
                 macro_split_line = line.split(":")
                 type_index = macro_split_line[0].split()
                 values = macro_split_line[1].split()
@@ -340,7 +378,8 @@ def main():
                 macro["index"] = macros[macro_type_to_str[macro["type"]]].index(macro)
                 macro_id_to_index[macro_type_to_str[macro["type"]]][macro["id"]] = macro["index"]
 
-            if split_line[0] == "INST2A03":
+            if split_line[0] == "INST2A03" \
+            or split_line[0] == "INSTVRC6":
                 inst_split_line = line.split()
                 instrument = {}
                 instrument["volume"] = macro_id_to_index["volume"][int(inst_split_line[2])]
@@ -375,11 +414,8 @@ def main():
                 order_split_line = line.split(":")
                 order_values = [int(value, 16) for value in order_split_line[1].split()]
                 order = {}
-                order["square1"] = order_values[0]
-                order["square2"] = order_values[1]
-                order["triangle"] = order_values[2]
-                order["noise"] = order_values[3]
-                order["dpcm"] = order_values[4]
+                for i in range(len(channels)):
+                    order[channels[i]] = order_values[i]
                 current_track["orders"].append(order)
 
             if split_line[0] == "PATTERN":
@@ -395,19 +431,11 @@ def main():
                     row_header = row_split_line[0].split()
 
                     #Format the notes to match our soundengine equates
-                    square1 = process_note(row_split_line[1])
-                    square2 = process_note(row_split_line[2])
-                    triangle = process_note(row_split_line[3])
-                    noise = process_note(row_split_line[4])
-                    dpcm = process_note(row_split_line[5])
-
                     row = {}
                     row["index"] = int(row_header[1], 16)
-                    row["square1"] = square1
-                    row["square2"] = square2
-                    row["triangle"] = triangle
-                    row["noise"] = noise
-                    row["dpcm"] = dpcm
+                    for i in range(len(channels)):
+                        row[channels[i]] = process_note(row_split_line[1 + i])
+
                     current_pattern.append(row)
 
             if split_line[0] == "DPCMDEF":
@@ -684,8 +712,7 @@ def main():
             master_stream = []
             streams = []
 
-            # TODO: add VRC6 channels
-            for channel in ["square1", "square2", "triangle", "noise", "dpcm"]:
+            for channel in channels:
 
                 unique_orders = set()
                 for order in track["orders"]:
