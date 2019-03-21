@@ -31,6 +31,8 @@ base_address_dpcm_note_to_sample_index: .res 2
 base_address_dpcm_note_to_sample_length: .res 2
 base_address_dpcm_note_to_loop_pitch_index: .res 2
 .endif
+.ifdef FEATURE_VRC6
+.endif
 
 apu_data_ready: .res 1
 apu_square_1_old: .res 1
@@ -39,6 +41,8 @@ apu_square_2_old: .res 1
 
 .ifdef FEATURE_DPCM
 apu_dpcm_state: .res 1
+.endif
+.ifdef FEATURE_VRC6
 .endif
 
 song_list_address: .res 2
@@ -378,7 +382,9 @@ channel_callback_table_lo:
     .ifdef FEATURE_DPCM
     .byte <dpcm_play_note
     .endif
+    .ifdef FEATURE_VRC6
     ; TODO: add entries for 3 VRC6 channels
+    .endif
 
 channel_callback_table_hi:
     .byte >square_1_play_note
@@ -388,7 +394,9 @@ channel_callback_table_hi:
     .ifdef FEATURE_DPCM
     .byte >dpcm_play_note
     .endif
+    .ifdef FEATURE_VRC6
     ; TODO: add entries for 3 VRC6 channels
+    .endif    
 
 stream_callback_table_lo:
     .byte <stream_set_length_s
@@ -987,6 +995,8 @@ note_already_played:
 .endif
 
 ; TODO: add play_note subroutines for 2 pulses (use same technique as square channels) and 1 sawtooth
+.ifdef FEATURE_VRC6
+.endif
 
 .ifdef FEATURE_ARPEGGIOS
 
@@ -1600,7 +1610,9 @@ no_noise:
 no_dpcm:
     .endif
     
+    .ifdef FEATURE_VRC6
     ; TODO: add logic for pulse and sawtooth channels
+    .endif
 
     dec sound_disable_update
 
@@ -1831,7 +1843,9 @@ no_noise:
 no_dpcm:
    .endif
    
+   .ifdef FEATURE_VRC6
    ; TODO: add logic for pulse and sawtooth channels
+   .endif
 
 no_more_sfx_streams_available:
 
@@ -2218,7 +2232,12 @@ note_length_counter_not_zero:
     sta apu_register_sets+19
     .endif
     
+    .ifdef FEATURE_VRC6
+    ;****************************************************************
+    ;Initialize VRC6
+    ;****************************************************************
     ; TODO: initialize pulse and sawtooths
+    .endif
 
     rts
 .endproc
@@ -2320,7 +2339,6 @@ skip:
     rts
 dpcm_nop:
     rts
-; TODO: add logic for pulse and sawthooths
 
 dpcm_state_callback_lo:
     .byte <(dpcm_nop-1)
@@ -2350,5 +2368,10 @@ dpcm_upload_registers:
     .else
     rts
     .endif
+
+    .ifdef FEATURE_VRC6
+    ; TODO: add logic for pulse and sawthooths
+    .endif
+
 
 .endproc

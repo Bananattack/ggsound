@@ -4,6 +4,7 @@ SOUNDENGINE_INC = 1
 ;Comment out these equates for features you do not wish to use.
 FEATURE_DPCM = 1
 FEATURE_ARPEGGIOS = 1
+FEATURE_VRC6 = 1
 
 .globalzp sound_region
 .globalzp sound_disable_update
@@ -12,6 +13,8 @@ FEATURE_ARPEGGIOS = 1
 .globalzp apu_square_2_old
 .ifdef FEATURE_DPCM
 .globalzp apu_dpcm_state
+.endif
+.ifdef FEATURE_VRC6
 .endif
 .globalzp sound_param_byte_0
 .globalzp sound_param_byte_1
@@ -28,6 +31,8 @@ FEATURE_ARPEGGIOS = 1
 .globalzp base_address_dpcm_note_to_sample_index
 .globalzp base_address_dpcm_note_to_sample_length
 .globalzp base_address_dpcm_note_to_loop_pitch_index
+.endif
+.ifdef FEATURE_VRC6
 .endif
 .globalzp stream_byte
 .globalzp song_address
@@ -51,18 +56,30 @@ DPCM_STATE_UPLOAD_THEN_WAIT = 2
 DPCM_STATE_WAIT = 3
 .endif
 
+.ifdef FEATURE_VRC6
+.endif
+
 ;Max number of music streams, sfx streams, and max total streams
 ;based on whether dpcm is enabled. soundeffect_one and soundeffect_two
 ;are always to be used when specifying sound effect priority.
+MAX_2A03_MUSIC_STREAMS = 4
+
 .ifdef FEATURE_DPCM
-MAX_MUSIC_STREAMS = 5
-soundeffect_one = 5
-soundeffect_two = 6
+MAX_DPCM_MUSIC_STREAMS = 1
 .else
-MAX_MUSIC_STREAMS = 4
-soundeffect_one = 4
-soundeffect_two = 5
+MAX_DPCM_MUSIC_STREAMS = 0
 .endif
+
+.ifdef FEATURE_DPCM
+MAX_VRC6_MUSIC_STREAMS = 3
+.else
+MAX_VRC6_MUSIC_STREAMS = 0
+.endif
+
+MAX_MUSIC_STREAMS = MAX_MUSIC_STREAMS_2A03 + MAX_MUSIC_STREAMS_DPCM + MAX_MUSIC_STREAMS_VRC6
+soundeffect_one = MAX_MUSIC_STREAMS
+soundeffect_two = MAX_MUSIC_STREAMS + 1
+
 MAX_SFX_STREAMS = 2
 MAX_STREAMS = (MAX_MUSIC_STREAMS + MAX_SFX_STREAMS)
 
@@ -266,6 +283,11 @@ track_header_triangle_stream_address = 8
 track_header_noise_stream_address = 10
 .ifdef FEATURE_DPCM
 track_header_dpcm_stream_address = 12
+.endif
+.ifdef FEATURE_VRC6
+track_header_vrc6_square1_stream_address = (MAX_DPCM_MUSIC_STREAMS * 2) + 12
+track_header_vrc6_square2_stream_address = (MAX_DPCM_MUSIC_STREAMS * 2) + 14
+track_header_vrc6_saw_stream_address = (MAX_DPCM_MUSIC_STREAMS * 2) + 16
 .endif
 
 instrument_header_volume_offset = 0
