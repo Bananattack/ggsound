@@ -2962,6 +2962,13 @@ vrc6_saw:
     lda #%10000000
     sta apu_register_sets+8
 
+    .ifdef FEATURE_VRC6
+    lda #0
+    sta apu_register_sets+((START_STREAM_VRC6*4)+0)
+    sta apu_register_sets+((START_STREAM_VRC6*4)+4)
+    sta apu_register_sets+((START_STREAM_VRC6*4)+8)
+    .endif
+
     .ifdef FEATURE_DPCM
     ;Now execute DPCM command/state machine. This state machine has logic for allowing
     ;a DPCM sound effect to override the currenty playing music DPCM sample until finished.
