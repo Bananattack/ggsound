@@ -18,7 +18,8 @@
 .byte "NES",$1a   ;iNES header
 .byte $02         ;# of PRG-ROM blocks. These are 16kb each. $4000 hex.
 .byte $01         ;# of CHR-ROM blocks. These are 8kb each. $2000 hex.
-.byte $01         ;Vertical mirroring. SRAM disabled. No trainer. Four-screen mirroring disabled. Mapper #0 (NROM)
+.byte $81         ;Vertical mirroring. SRAM disabled. No trainer. Four-screen mirroring disabled. Mapper low nybble in upper digit. mapper 024 = $18.
+.byte $10         ;Mapper high nybble in upper digit. mapper 024 = $18.
 .byte $00         ;Rest of NROM bits (all 0)
 
 .segment "CODE"
@@ -64,6 +65,30 @@ reset:
     ;Wait for PPU to be ready.
     wait_vblank
     wait_vblank
+
+    ;Initialize VRC6.
+    lda #$00
+    sta $8000
+    lda #$02
+    sta $C000
+    lda #$20
+    sta $B003
+    lda #$00
+    sta $D000
+    lda #$01
+    sta $D001
+    lda #$02
+    sta $D002
+    lda #$03
+    sta $D003
+    lda #$04
+    sta $E000
+    lda #$05
+    sta $E001
+    lda #$06
+    sta $E002
+    lda #$07
+    sta $E003
 
     ;Install nmi routine for just counting nmis (detecting system)
     lda #<vblank_get_tv_system

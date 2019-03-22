@@ -15,34 +15,34 @@ sfx_list:
   .word _sfx_collide
 
 instrument_list:
-  .word Piano_0
-  .word Instrument1_1
-  .word Instrument2_2
-  .word Instrument3_3
-  .word Instrument4_4
-  .word Note_cut_5
-  .word Shot_6
-  .word Instrument5_7
-  .word Laser_8
-  .word Instrument6_9
-  .word Instrument7_10
-  .word Instrument8_11
-  .word Instrument9_12
-  .word Sing_13
-  .word Note_Cut_14
-  .word dpcm_15
-  .word Sing_16
-  .word Triangle_On_17
-  .word SingMinArp_18
-  .word Guitar_19
-  .word SingMajArp_20
-  .word SingDimArp_21
-  .word Zap_22
-  .word Collide_23
-  .word Drum1_24
-  .word Drum2_25
-  .word Drum3_26
-  .word Triangle_On_27
+  .word _Piano_0
+  .word _Instrument1_1
+  .word _Instrument2_2
+  .word _Instrument3_3
+  .word _Instrument4_4
+  .word _Note_cut_5
+  .word _Shot_6
+  .word _Instrument5_7
+  .word _Laser_8
+  .word _Instrument6_9
+  .word _Instrument7_10
+  .word _Instrument8_11
+  .word _Instrument9_12
+  .word _Sing_13
+  .word _Note_Cut_14
+  .word _dpcm_15
+  .word _Sing_16
+  .word _Triangle_On_17
+  .word _SingMinArp_18
+  .word _Guitar_19
+  .word _SingMajArp_20
+  .word _SingDimArp_21
+  .word _Zap_22
+  .word _Collide_23
+  .word _Drum1_24
+  .word _Drum2_25
+  .word _Drum3_26
+  .word _Triangle_On_27
   .word silent_28
 
 dpcm_list:
@@ -51,196 +51,196 @@ dpcm_list:
   .word dpcm_note_to_sample_length
   .word dpcm_note_to_loop_pitch_index
 
-Piano_0:
+_Piano_0:
   .byte 5,19,21,23,ARP_TYPE_ABSOLUTE
   .byte 12,10,6,4,3,4,5,8,10,8,5,3,3,ENV_STOP
   .byte 0,ENV_STOP
   .byte 128,DUTY_ENV_STOP
   .byte ENV_STOP
 
-Instrument1_1:
+_Instrument1_1:
   .byte 5,24,26,28,ARP_TYPE_ABSOLUTE
   .byte 11,8,7,8,10,8,5,3,1,1,2,4,5,5,3,2,1,1,ENV_STOP
   .byte 0,ENV_STOP
   .byte 64,DUTY_ENV_STOP
   .byte ENV_STOP
 
-Instrument2_2:
+_Instrument2_2:
   .byte 5,13,15,17,ARP_TYPE_ABSOLUTE
   .byte 10,10,10,10,10,10,0,ENV_STOP
   .byte 0,ENV_STOP
   .byte 64,DUTY_ENV_STOP
   .byte ENV_STOP
 
-Instrument3_3:
+_Instrument3_3:
   .byte 5,11,13,15,ARP_TYPE_ABSOLUTE
   .byte 12,5,3,1,0,ENV_STOP
   .byte 0,ENV_STOP
   .byte 0,DUTY_ENV_STOP
   .byte ENV_STOP
 
-Instrument4_4:
+_Instrument4_4:
   .byte 5,24,26,28,ARP_TYPE_ABSOLUTE
   .byte 11,8,7,8,10,8,5,3,1,1,2,4,5,5,3,2,1,1,ENV_STOP
   .byte 0,ENV_STOP
   .byte 128,DUTY_ENV_STOP
   .byte ENV_STOP
 
-Note_cut_5:
+_Note_cut_5:
   .byte 5,7,9,11,ARP_TYPE_ABSOLUTE
   .byte 0,ENV_STOP
   .byte 0,ENV_STOP
   .byte 0,DUTY_ENV_STOP
   .byte ENV_STOP
 
-Shot_6:
+_Shot_6:
   .byte 5,38,40,42,ARP_TYPE_ABSOLUTE
   .byte 15,6,10,11,11,10,9,8,7,6,5,4,3,2,2,2,2,1,1,1,1,1,1,1,1,1,1,1,1,0,0,0,ENV_STOP
   .byte 0,ENV_STOP
   .byte 0,DUTY_ENV_STOP
   .byte ENV_STOP
 
-Instrument5_7:
+_Instrument5_7:
   .byte 5,14,16,18,ARP_TYPE_ABSOLUTE
   .byte 14,14,14,11,4,2,2,2,ENV_STOP
   .byte 0,ENV_STOP
   .byte 0,DUTY_ENV_STOP
   .byte ENV_STOP
 
-Laser_8:
+_Laser_8:
   .byte 5,22,37,39,ARP_TYPE_ABSOLUTE
   .byte 14,13,12,11,10,9,8,8,7,6,5,4,3,2,1,0,ENV_STOP
   .byte 10,10,10,10,10,10,10,10,10,10,10,10,10,10,ENV_STOP
   .byte 0,DUTY_ENV_STOP
   .byte ENV_STOP
 
-Instrument6_9:
+_Instrument6_9:
   .byte 5,14,16,19,ARP_TYPE_ABSOLUTE
   .byte 6,9,11,11,7,6,5,5,ENV_STOP
   .byte 0,ENV_STOP
   .byte 128,0,DUTY_ENV_STOP
   .byte ENV_STOP
 
-Instrument7_10:
+_Instrument7_10:
   .byte 5,12,14,16,ARP_TYPE_ABSOLUTE
   .byte 15,2,0,0,0,0,ENV_STOP
   .byte 0,ENV_STOP
   .byte 0,DUTY_ENV_STOP
   .byte ENV_STOP
 
-Instrument8_11:
+_Instrument8_11:
   .byte 5,7,9,11,ARP_TYPE_ABSOLUTE
   .byte 0,ENV_STOP
   .byte 0,ENV_STOP
   .byte 0,DUTY_ENV_STOP
   .byte ENV_STOP
 
-Instrument9_12:
+_Instrument9_12:
   .byte 5,14,16,18,ARP_TYPE_ABSOLUTE
   .byte 9,9,9,6,2,1,1,1,ENV_STOP
   .byte 0,ENV_STOP
   .byte 0,DUTY_ENV_STOP
   .byte ENV_STOP
 
-Sing_13:
+_Sing_13:
   .byte 5,27,48,50,ARP_TYPE_ABSOLUTE
   .byte 3,4,4,5,5,5,5,5,5,5,5,4,4,4,4,4,4,4,3,3,3,ENV_STOP
   .byte 0,0,0,0,0,0,0,0,0,-1,-1,1,1,1,1,-1,-1,-1,-1,ENV_LOOP,38
   .byte 192,DUTY_ENV_STOP
   .byte ENV_STOP
 
-Note_Cut_14:
+_Note_Cut_14:
   .byte 5,7,9,11,ARP_TYPE_ABSOLUTE
   .byte 0,ENV_STOP
   .byte 0,ENV_STOP
   .byte 0,DUTY_ENV_STOP
   .byte ENV_STOP
 
-dpcm_15:
+_dpcm_15:
   .byte 5,14,16,18,ARP_TYPE_ABSOLUTE
   .byte 8,4,3,2,2,1,1,0,ENV_STOP
   .byte 0,ENV_STOP
   .byte 0,DUTY_ENV_STOP
   .byte ENV_STOP
 
-Sing_16:
+_Sing_16:
   .byte 5,27,48,50,ARP_TYPE_ABSOLUTE
   .byte 3,4,4,5,5,5,5,5,5,5,5,4,4,4,4,4,4,4,3,3,3,ENV_STOP
   .byte 0,0,0,0,0,0,0,0,0,-1,-1,1,1,1,1,-1,-1,-1,-1,ENV_LOOP,38
   .byte 128,DUTY_ENV_STOP
   .byte ENV_STOP
 
-Triangle_On_17:
+_Triangle_On_17:
   .byte 5,7,9,11,ARP_TYPE_ABSOLUTE
   .byte 1,ENV_STOP
   .byte 0,ENV_STOP
   .byte 0,DUTY_ENV_STOP
   .byte ENV_STOP
 
-SingMinArp_18:
+_SingMinArp_18:
   .byte 5,27,48,50,ARP_TYPE_ABSOLUTE
   .byte 3,4,4,5,5,5,5,5,5,5,5,4,4,4,4,4,4,4,3,3,3,ENV_STOP
   .byte 0,0,0,0,0,0,0,0,0,-1,-1,1,1,1,1,-1,-1,-1,-1,ENV_LOOP,38
   .byte 128,DUTY_ENV_STOP
   .byte 0,3,7,12,ENV_LOOP,50
 
-Guitar_19:
+_Guitar_19:
   .byte 5,70,91,94,ARP_TYPE_ABSOLUTE
   .byte 3,3,4,5,5,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,5,5,5,5,5,5,5,5,5,5,5,5,5,5,4,4,4,4,4,4,4,4,4,3,3,3,3,3,3,3,3,3,3,3,3,2,2,2,2,2,2,1,ENV_STOP
   .byte 0,0,0,0,0,0,0,0,0,-1,-1,1,1,1,1,-1,-1,-1,-1,ENV_LOOP,81
   .byte 192,64,DUTY_ENV_STOP
   .byte ENV_STOP
 
-SingMajArp_20:
+_SingMajArp_20:
   .byte 5,27,48,50,ARP_TYPE_ABSOLUTE
   .byte 3,4,4,5,5,5,5,5,5,5,5,4,4,4,4,4,4,4,3,3,3,ENV_STOP
   .byte 0,0,0,0,0,0,0,0,0,-1,-1,1,1,1,1,-1,-1,-1,-1,ENV_LOOP,38
   .byte 128,DUTY_ENV_STOP
   .byte 0,4,7,12,ENV_LOOP,50
 
-SingDimArp_21:
+_SingDimArp_21:
   .byte 5,27,48,50,ARP_TYPE_ABSOLUTE
   .byte 3,4,4,5,5,5,5,5,5,5,5,4,4,4,4,4,4,4,3,3,3,ENV_STOP
   .byte 0,0,0,0,0,0,0,0,0,-1,-1,1,1,1,1,-1,-1,-1,-1,ENV_LOOP,38
   .byte 128,DUTY_ENV_STOP
   .byte 0,3,6,12,ENV_LOOP,50
 
-Zap_22:
+_Zap_22:
   .byte 5,22,24,26,ARP_TYPE_ABSOLUTE
   .byte 14,13,12,11,10,9,8,8,7,6,5,4,3,2,1,0,ENV_STOP
   .byte 0,ENV_STOP
   .byte 64,DUTY_ENV_STOP
   .byte ENV_STOP
 
-Collide_23:
+_Collide_23:
   .byte 5,22,37,39,ARP_TYPE_ABSOLUTE
   .byte 14,13,12,11,10,9,8,8,7,6,5,4,3,2,1,0,ENV_STOP
   .byte 1,1,1,1,1,1,1,1,1,1,1,1,1,1,ENV_STOP
   .byte 192,DUTY_ENV_STOP
   .byte ENV_STOP
 
-Drum1_24:
+_Drum1_24:
   .byte 5,15,17,19,ARP_TYPE_FIXED
   .byte 5,4,3,3,2,2,1,1,0,ENV_STOP
   .byte 0,ENV_STOP
   .byte 0,DUTY_ENV_STOP
   .byte 7,ENV_STOP
 
-Drum2_25:
+_Drum2_25:
   .byte 5,11,13,15,ARP_TYPE_ABSOLUTE
   .byte 4,3,2,1,0,ENV_STOP
   .byte 0,ENV_STOP
   .byte 0,DUTY_ENV_STOP
   .byte ENV_STOP
 
-Drum3_26:
+_Drum3_26:
   .byte 5,25,27,29,ARP_TYPE_FIXED
   .byte 4,4,5,5,6,6,5,5,4,4,3,3,2,2,1,1,1,1,0,ENV_STOP
   .byte 0,ENV_STOP
   .byte 0,DUTY_ENV_STOP
   .byte 0,1,2,3,4,5,6,7,8,ENV_STOP
 
-Triangle_On_27:
+_Triangle_On_27:
   .byte 5,7,9,11,ARP_TYPE_ABSOLUTE
   .byte 1,ENV_STOP
   .byte 0,ENV_STOP
@@ -287,6 +287,9 @@ _robot_adv:
   .word _robot_adv_triangle
   .word _robot_adv_noise
   .word _robot_adv_dpcm
+  .word 0
+  .word 0
+  .word 0
 
 _robot_adv_square1:
 _robot_adv_square1_loop:
@@ -490,6 +493,9 @@ _k466:
   .word _k466_triangle
   .word 0
   .word 0
+  .word 0
+  .word 0
+  .word 0
 
 _k466_square1:
 _k466_square1_loop:
@@ -629,6 +635,9 @@ _k11:
   .word _k11_square2
   .word _k11_triangle
   .word _k11_noise
+  .word 0
+  .word 0
+  .word 0
   .word 0
 
 _k11_square1:
@@ -795,6 +804,9 @@ _soler42:
   .word _soler42_square2
   .word _soler42_triangle
   .word _soler42_noise
+  .word 0
+  .word 0
+  .word 0
   .word 0
 
 _soler42_square1:
@@ -1140,6 +1152,9 @@ _antagonist:
   .word _antagonist_triangle
   .word 0
   .word 0
+  .word 0
+  .word 0
+  .word 0
 
 _antagonist_square1:
 _antagonist_square1_loop:
@@ -1246,6 +1261,9 @@ _arps:
   .word _arps_triangle
   .word 0
   .word 0
+  .word 0
+  .word 0
+  .word 0
 
 _arps_square1:
 _arps_square1_loop:
@@ -1304,6 +1322,9 @@ _noise_arps:
   .word 0
   .word _noise_arps_noise
   .word 0
+  .word 0
+  .word 0
+  .word 0
 
 _noise_arps_noise:
 _noise_arps_noise_loop:
@@ -1327,6 +1348,9 @@ _sfx_shot:
   .word 0
   .word _sfx_shot_noise
   .word 0
+  .word 0
+  .word 0
+  .word 0
 
 _sfx_shot_noise:
   .byte CAL,<(_sfx_shot_noise_0),>(_sfx_shot_noise_0)
@@ -1339,6 +1363,9 @@ _sfx_laser:
   .byte 0, 1
   .byte 0, 1
   .word _sfx_laser_square1
+  .word 0
+  .word 0
+  .word 0
   .word 0
   .word 0
   .word 0
@@ -1359,6 +1386,9 @@ _sfx_dpcm:
   .word 0
   .word 0
   .word _sfx_dpcm_dpcm
+  .word 0
+  .word 0
+  .word 0
 
 _sfx_dpcm_dpcm:
   .byte CAL,<(_sfx_dpcm_dpcm_0),>(_sfx_dpcm_dpcm_0)
@@ -1375,6 +1405,9 @@ _sfx_zap:
   .word 0
   .word _sfx_zap_noise
   .word 0
+  .word 0
+  .word 0
+  .word 0
 
 _sfx_zap_noise:
   .byte CAL,<(_sfx_zap_noise_0),>(_sfx_zap_noise_0)
@@ -1390,6 +1423,9 @@ _sfx_collide:
   .word 0
   .word 0
   .word _sfx_collide_noise
+  .word 0
+  .word 0
+  .word 0
   .word 0
 
 _sfx_collide_noise:

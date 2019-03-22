@@ -4,7 +4,7 @@ SOUNDENGINE_INC = 1
 ;Comment out these equates for features you do not wish to use.
 FEATURE_DPCM = 1
 FEATURE_ARPEGGIOS = 1
-FEATURE_VRC6 = 1 ; 0 = no vrc, 1 = VRC6a (mapper 24), 2 = VRC6b (mapper 26)
+FEATURE_VRC6 = 1 ; 1 = VRC6a (mapper 24), 2 = VRC6b (mapper 26)
 
 .globalzp sound_region
 .globalzp sound_disable_update

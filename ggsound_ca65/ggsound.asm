@@ -31,8 +31,6 @@ base_address_dpcm_note_to_sample_index: .res 2
 base_address_dpcm_note_to_sample_length: .res 2
 base_address_dpcm_note_to_loop_pitch_index: .res 2
 .endif
-.ifdef FEATURE_VRC6
-.endif
 
 apu_data_ready: .res 1
 apu_square_1_old: .res 1
@@ -40,8 +38,6 @@ apu_square_2_old: .res 1
 
 .ifdef FEATURE_DPCM
 apu_dpcm_state: .res 1
-.endif
-.ifdef FEATURE_VRC6
 .endif
 
 song_list_address: .res 2
@@ -2053,7 +2049,7 @@ no_vrc6_square_1:
     sta sound_param_word_0
     iny
     lda (song_address),y
-    beq no_vrc6_square_1
+    beq no_vrc6_square_2
     sta sound_param_word_0+1
 
     lda #START_STREAM_VRC6+1
@@ -2087,7 +2083,7 @@ no_vrc6_square_2:
     sta sound_param_word_0
     iny
     lda (song_address),y
-    beq no_vrc6_square_1
+    beq no_vrc6_saw
     sta sound_param_word_0+1
 
     lda #START_STREAM_VRC6+2
@@ -2417,7 +2413,7 @@ no_vrc6_square_2:
     sta sound_param_word_0
     iny
     lda (sound_local_word_0),y
-    beq no_vrc6_square_2
+    beq no_vrc6_saw
     sta sound_param_word_0+1
 
     lda #START_STREAM_VRC6+2

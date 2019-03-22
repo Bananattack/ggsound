@@ -2,11 +2,11 @@
 .include "tracks.inc"
 .include "ggsound.inc"
 
-.segment "CODE"
+.segment "ROM_8K"
 
 .align 64
 .include "track_dpcm.inc"
 
-.segment "ROM0"
+.segment "ROM_16K"
 
 .include "track_data.inc"
