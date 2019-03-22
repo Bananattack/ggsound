@@ -37,12 +37,6 @@ base_address_dpcm_note_to_loop_pitch_index: .res 2
 apu_data_ready: .res 1
 apu_square_1_old: .res 1
 apu_square_2_old: .res 1
-.ifdef FEATURE_VRC6
-apu_vrc6_square_1_old: .res 1
-apu_vrc6_square_2_old: .res 1
-apu_vrc6_saw_old: .res 1
-.endif
-; TODO: do I have to track pulse and/or sawtooth waves like the square channels above?
 
 .ifdef FEATURE_DPCM
 apu_dpcm_state: .res 1
@@ -2837,8 +2831,6 @@ note_length_counter_not_zero:
     lda #$C9
     sta apu_register_sets+((START_STREAM_VRC6*4)+2)
 
-    sta apu_vrc6_square_1_old
-
     lda #$00
     sta apu_register_sets+((START_STREAM_VRC6*4)+3)
 
@@ -2849,14 +2841,12 @@ note_length_counter_not_zero:
     sta apu_register_sets+((START_STREAM_VRC6*4)+4)
 
     lda #0
-    sta apu_register_sets+((START_STREAM_VRC6*4)+5)    
+    sta apu_register_sets+((START_STREAM_VRC6*4)+5)
 
     lda #$C9
     sta apu_register_sets+((START_STREAM_VRC6*4)+6)
 
-    sta apu_vrc6_square_2_old
-
-    lda #$00
+    lda #0
     sta apu_register_sets+((START_STREAM_VRC6*4)+7)
 
     ;****************************************************************
@@ -2866,14 +2856,12 @@ note_length_counter_not_zero:
     sta apu_register_sets+((START_STREAM_VRC6*4)+8)
 
     lda #0
-    sta apu_register_sets+((START_STREAM_VRC6*4)+9)    
+    sta apu_register_sets+((START_STREAM_VRC6*4)+9)
 
     lda #$C9
     sta apu_register_sets+((START_STREAM_VRC6*4)+10)
 
-    sta apu_vrc6_square_2_old
-
-    lda #$00
+    lda #0
     sta apu_register_sets+((START_STREAM_VRC6*4)+11)
 
     .endif
@@ -2941,7 +2929,29 @@ noise:
     sta $400F
 
     .ifdef FEATURE_VRC6
-    ; TODO: add logic for pulse and sawthooths
+vrc6_square1:    
+    lda apu_register_sets+((START_STREAM_VRC6*4)+0)
+    sta vrc6_reg_square1+VRC6_CONTROL
+    lda apu_register_sets+((START_STREAM_VRC6*4)+2)
+    sta vrc6_reg_square1+VRC6_FREQ_LO
+    lda apu_register_sets+((START_STREAM_VRC6*4)+3)
+    sta vrc6_reg_square1+VRC6_FREQ_HI
+
+vrc6_square2:
+    lda apu_register_sets+((START_STREAM_VRC6*4)+4)
+    sta vrc6_reg_square2+VRC6_CONTROL
+    lda apu_register_sets+((START_STREAM_VRC6*4)+6)
+    sta vrc6_reg_square2+VRC6_FREQ_LO
+    lda apu_register_sets+((START_STREAM_VRC6*4)+7)
+    sta vrc6_reg_square2+VRC6_FREQ_HI
+
+vrc6_saw:
+    lda apu_register_sets+((START_STREAM_VRC6*4)+8)
+    sta vrc6_reg_saw+VRC6_CONTROL
+    lda apu_register_sets+((START_STREAM_VRC6*4)+10)
+    sta vrc6_reg_saw+VRC6_FREQ_LO
+    lda apu_register_sets+((START_STREAM_VRC6*4)+11)
+    sta vrc6_reg_saw+VRC6_FREQ_HI
     .endif
 
     ;Clear out all volume values from this frame in case a sound effect is killed suddenly.
