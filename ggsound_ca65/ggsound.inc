@@ -4,7 +4,8 @@ SOUNDENGINE_INC = 1
 ;Comment out these equates for features you do not wish to use.
 FEATURE_DPCM = 1
 FEATURE_ARPEGGIOS = 1
-FEATURE_VRC6 = 1 ; 1 = VRC6a (mapper 24), 2 = VRC6b (mapper 26)
+FEATURE_VRC6 = 1
+;FEATURE_VRC6_REV_B = 1 ; swaps address lines x01 and x02
 
 .globalzp sound_region
 .globalzp sound_disable_update
@@ -63,14 +64,14 @@ vrc6_reg_square1 = $9000
 vrc6_reg_square2 = $A000
 vrc6_reg_saw = $B000
 
-.if FEATURE_VRC6=1
-VRC6_CONTROL = 0
-VRC6_FREQ_LO = 1
-VRC6_FREQ_HI = 2
-.else
+.ifdef FEATURE_VRC6_REV_B
 VRC6_CONTROL = 0
 VRC6_FREQ_LO = 2
 VRC6_FREQ_HI = 1
+.else
+VRC6_CONTROL = 0
+VRC6_FREQ_LO = 1
+VRC6_FREQ_HI = 2
 .endif
 
 .endif
