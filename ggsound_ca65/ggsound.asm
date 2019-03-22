@@ -371,6 +371,28 @@ pal_note_table_hi:
     .byte >$0031, >$002E, >$002B, >$0029, >$0026, >$0024, >$0022, >$0020, >$001E, >$001D, >$001B, >$0019
     .byte >$0018, >$0016, >$0015, >$0014, >$0013, >$0012, >$0011, >$0010, >$000F, >$000E, >$000D, >$000C
 
+.ifdef FEATURE_VRC6
+vrc6_saw_note_table_lo:
+    .byte <$0F44, <$0E69, <$0D9A, <$0CD6, <$0C1E, <$0B70, <$0ACB, <$0A30, <$099E, <$0913, <$0891, <$0816
+    .byte <$07A2, <$0734, <$06CC, <$066B, <$060E, <$05B7, <$0565, <$0518, <$04CE, <$0489, <$0448, <$040A
+    .byte <$03D0, <$0399, <$0366, <$0335, <$0307, <$02DB, <$02B2, <$028B, <$0267, <$0244, <$0223, <$0205
+    .byte <$01E8, <$01CC, <$01B2, <$019A, <$0183, <$016D, <$0159, <$0145, <$0133, <$0122, <$0111, <$0102
+    .byte <$00F3, <$00E6, <$00D9, <$00CC, <$00C1, <$00B6, <$00AC, <$00A2, <$0099, <$0090, <$0088, <$0080
+    .byte <$0079, <$0072, <$006C, <$0066, <$0060, <$005B, <$0055, <$0051, <$004C, <$0048, <$0044, <$0040
+    .byte <$003C, <$0039, <$0035, <$0032, <$002F, <$002D, <$002A, <$0028, <$0025, <$0023, <$0021, <$001F
+    .byte <$001E, <$001C, <$001A, <$0019, <$0017, <$0016, <$0015, <$0013, <$0012, <$0011, <$0010, <$000F
+
+vrc6_saw_note_table_hi:
+    .byte >$0F44, >$0E69, >$0D9A, >$0CD6, >$0C1E, >$0B70, >$0ACB, >$0A30, >$099E, >$0913, >$0891, >$0816
+    .byte >$07A2, >$0734, >$06CC, >$066B, >$060E, >$05B7, >$0565, >$0518, >$04CE, >$0489, >$0448, >$040A
+    .byte >$03D0, >$0399, >$0366, >$0335, >$0307, >$02DB, >$02B2, >$028B, >$0267, >$0244, >$0223, >$0205
+    .byte >$01E8, >$01CC, >$01B2, >$019A, >$0183, >$016D, >$0159, >$0145, >$0133, >$0122, >$0111, >$0102
+    .byte >$00F3, >$00E6, >$00D9, >$00CC, >$00C1, >$00B6, >$00AC, >$00A2, >$0099, >$0090, >$0088, >$0080
+    .byte >$0079, >$0072, >$006C, >$0066, >$0060, >$005B, >$0055, >$0051, >$004C, >$0048, >$0044, >$0040
+    .byte >$003C, >$0039, >$0035, >$0032, >$002F, >$002D, >$002A, >$0028, >$0025, >$0023, >$0021, >$001F
+    .byte >$001E, >$001C, >$001A, >$0019, >$0017, >$0016, >$0015, >$0013, >$0012, >$0011, >$0010, >$000F    
+.endif
+
 ;Maps NTSC to NTSC tempo, maps PAL and Dendy to
 ;faster PAL tempo in song and sfx headers.
 sound_region_to_tempo_offset:
@@ -1014,10 +1036,6 @@ note_already_played:
     lda (base_address_instruments),y
     sta sound_local_word_0+1
 
-    ;Set negate flag for sweep unit.
-    lda #$08
-    sta stream_channel_register_2,x
-
     .ifdef FEATURE_ARPEGGIOS
 
     ;Get arpeggio type.
@@ -1087,8 +1105,7 @@ skip_volume_loop:
     ;Initialize channel control register with envelope decay and
     ;length counter disabled but preserving current duty cycle.
     lda stream_channel_register_1,x
-    and #%11000000
-    ora #%00110000
+    and #%01110000
 
     ;Load current volume value.
     ora (sound_local_word_0),y
@@ -1101,8 +1118,7 @@ volume_stop:
     jmp done
 silence_until_note:
     lda stream_channel_register_1,x
-    and #%11000000
-    ora #%00110000
+    and #%01110000
     sta stream_channel_register_1,x
 
 done:
@@ -1205,10 +1221,6 @@ vrc6_square_2_play_note = vrc6_square_1_play_note
     lda (base_address_instruments),y
     sta sound_local_word_0+1
 
-    ;Set negate flag for sweep unit.
-    lda #$08
-    sta stream_channel_register_2,x
-
     .ifdef FEATURE_ARPEGGIOS
 
     ;Get arpeggio type.
@@ -1243,11 +1255,11 @@ return_from_arpeggio_callback:
     ora #STREAM_PITCH_LOADED_SET
     sta stream_flags,x
     ;Load low byte of note.
-    lda (base_address_note_table_lo),y
+    lda vrc6_saw_note_table_lo,y
     ;Store in low 8 bits of pitch.
     sta stream_channel_register_3,x
     ;Load high byte of note.
-    lda (base_address_note_table_hi),y
+    lda vrc6_saw_note_table_hi,y
     sta stream_channel_register_4,x
 pitch_already_loaded:
 
