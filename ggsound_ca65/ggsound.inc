@@ -4,7 +4,7 @@ SOUNDENGINE_INC = 1
 ;Comment out these equates for features you do not wish to use.
 FEATURE_DPCM = 1
 FEATURE_ARPEGGIOS = 1
-FEATURE_VRC6 = 1
+FEATURE_VRC6 = 1 ; 0 = no vrc, 1 = VRC6a (mapper 24), 2 = VRC6b (mapper 26)
 
 .globalzp sound_region
 .globalzp sound_disable_update
@@ -57,26 +57,45 @@ DPCM_STATE_WAIT = 3
 .endif
 
 .ifdef FEATURE_VRC6
+
+vrc6_reg_freq_ctrl = $9003
+vrc6_reg_square1 = $9000
+vrc6_reg_square2 = $A000
+vrc6_reg_saw = $B000
+
+.if FEATURE_VRC6=1
+VRC6_CONTROL = 0
+VRC6_FREQ_LO = 1
+VRC6_FREQ_HI = 2
+.else
+VRC6_CONTROL = 0
+VRC6_FREQ_LO = 2
+VRC6_FREQ_HI = 1
+.endif
+
 .endif
 
 ;Max number of music streams, sfx streams, and max total streams
 ;based on whether dpcm is enabled. soundeffect_one and soundeffect_two
 ;are always to be used when specifying sound effect priority.
 MAX_2A03_MUSIC_STREAMS = 4
+START_STREAM_2A03 = 0
 
 .ifdef FEATURE_DPCM
 MAX_DPCM_MUSIC_STREAMS = 1
+START_STREAM_DPCM = MAX_2A03_MUSIC_STREAMS
 .else
 MAX_DPCM_MUSIC_STREAMS = 0
 .endif
 
-.ifdef FEATURE_DPCM
+.ifdef FEATURE_VRC6
 MAX_VRC6_MUSIC_STREAMS = 3
+START_STREAM_VRC6 = MAX_2A03_MUSIC_STREAMS + MAX_DPCM_MUSIC_STREAMS
 .else
 MAX_VRC6_MUSIC_STREAMS = 0
 .endif
 
-MAX_MUSIC_STREAMS = MAX_MUSIC_STREAMS_2A03 + MAX_MUSIC_STREAMS_DPCM + MAX_MUSIC_STREAMS_VRC6
+MAX_MUSIC_STREAMS = (MAX_2A03_MUSIC_STREAMS + MAX_DPCM_MUSIC_STREAMS + MAX_VRC6_MUSIC_STREAMS)
 soundeffect_one = MAX_MUSIC_STREAMS
 soundeffect_two = MAX_MUSIC_STREAMS + 1
 
@@ -285,9 +304,9 @@ track_header_noise_stream_address = 10
 track_header_dpcm_stream_address = 12
 .endif
 .ifdef FEATURE_VRC6
-track_header_vrc6_square1_stream_address = (MAX_DPCM_MUSIC_STREAMS * 2) + 12
-track_header_vrc6_square2_stream_address = (MAX_DPCM_MUSIC_STREAMS * 2) + 14
-track_header_vrc6_saw_stream_address = (MAX_DPCM_MUSIC_STREAMS * 2) + 16
+track_header_vrc6_square1_stream_address = ((START_STREAM_VRC6+0) * 2 + 4)
+track_header_vrc6_square2_stream_address = ((START_STREAM_VRC6+1) * 2 + 4)
+track_header_vrc6_saw_stream_address = ((START_STREAM_VRC6+2) * 2 + 4)
 .endif
 
 instrument_header_volume_offset = 0
