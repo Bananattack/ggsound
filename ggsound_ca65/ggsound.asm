@@ -1071,6 +1071,7 @@ return_from_arpeggio_callback:
     sta stream_channel_register_3,x
     ;Load high byte of note.
     lda (base_address_note_table_hi),y
+    ora #$80
     sta stream_channel_register_4,x
 pitch_already_loaded:
 
@@ -1148,7 +1149,9 @@ pitch_delta_positive:
     adc (sound_local_word_0),y
     sta stream_channel_register_3,x
     lda stream_channel_register_4,x
+    and #$0f
     adc #0
+    ora #$80
     sta stream_channel_register_4,x
 
     jmp pitch_delta_test_done
@@ -1160,7 +1163,9 @@ pitch_delta_negative:
     adc (sound_local_word_0),y
     sta stream_channel_register_3,x
     lda stream_channel_register_4,x
+    and #$0f
     adc #$ff
+    ora #$80
     sta stream_channel_register_4,x
 
 pitch_delta_test_done:
@@ -1256,6 +1261,7 @@ return_from_arpeggio_callback:
     sta stream_channel_register_3,x
     ;Load high byte of note.
     lda vrc6_saw_note_table_hi,y
+    ora #$80    
     sta stream_channel_register_4,x
 pitch_already_loaded:
 
@@ -1335,7 +1341,9 @@ pitch_delta_positive:
     adc (sound_local_word_0),y
     sta stream_channel_register_3,x
     lda stream_channel_register_4,x
+    and #$0f
     adc #0
+    ora #$80
     sta stream_channel_register_4,x
 
     jmp pitch_delta_test_done
@@ -1347,7 +1355,9 @@ pitch_delta_negative:
     adc (sound_local_word_0),y
     sta stream_channel_register_3,x
     lda stream_channel_register_4,x
+    and #$0f
     adc #$ff
+    ora #$80
     sta stream_channel_register_4,x
 
 pitch_delta_test_done:

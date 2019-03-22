@@ -42,8 +42,9 @@ instrument_list:
   .word _Drum1_24
   .word _Drum2_25
   .word _Drum3_26
-  .word _Triangle_On_27
-  .word silent_28
+  .word _New_instrument_27
+  .word _Triangle_On_28
+  .word silent_29
 
 dpcm_list:
   .word dpcm_samples_list
@@ -240,14 +241,21 @@ _Drum3_26:
   .byte 0,DUTY_ENV_STOP
   .byte 0,1,2,3,4,5,6,7,8,ENV_STOP
 
-_Triangle_On_27:
+_New_instrument_27:
+  .byte 5,19,21,23,ARP_TYPE_ABSOLUTE
+  .byte 12,10,6,4,3,4,5,8,10,8,5,3,3,ENV_STOP
+  .byte 0,ENV_STOP
+  .byte 0,DUTY_ENV_STOP
+  .byte ENV_STOP
+
+_Triangle_On_28:
   .byte 5,7,9,11,ARP_TYPE_ABSOLUTE
   .byte 1,ENV_STOP
   .byte 0,ENV_STOP
   .byte 0,DUTY_ENV_STOP
   .byte ENV_STOP
 
-silent_28:
+silent_29:
   .byte 5,7,9,11,ARP_TYPE_ABSOLUTE
   .byte 0,ENV_STOP
   .byte 0,ENV_STOP
@@ -287,9 +295,9 @@ _robot_adv:
   .word _robot_adv_triangle
   .word _robot_adv_noise
   .word _robot_adv_dpcm
-  .word 0
-  .word 0
-  .word 0
+  .word _robot_adv_vrc6_square1
+  .word _robot_adv_vrc6_square2
+  .word _robot_adv_vrc6_saw
 
 _robot_adv_square1:
 _robot_adv_square1_loop:
@@ -336,19 +344,46 @@ _robot_adv_dpcm_loop:
   .byte GOT
   .word _robot_adv_dpcm_loop
 
+_robot_adv_vrc6_square1:
+_robot_adv_vrc6_square1_loop:
+  .byte CAL,<(_robot_adv_vrc6_square1_0),>(_robot_adv_vrc6_square1_0)
+  .byte CAL,<(_robot_adv_vrc6_square1_0),>(_robot_adv_vrc6_square1_0)
+  .byte CAL,<(_robot_adv_vrc6_square1_0),>(_robot_adv_vrc6_square1_0)
+  .byte CAL,<(_robot_adv_vrc6_square1_0),>(_robot_adv_vrc6_square1_0)
+  .byte GOT
+  .word _robot_adv_vrc6_square1_loop
+
+_robot_adv_vrc6_square2:
+_robot_adv_vrc6_square2_loop:
+  .byte CAL,<(_robot_adv_vrc6_square2_0),>(_robot_adv_vrc6_square2_0)
+  .byte CAL,<(_robot_adv_vrc6_square2_0),>(_robot_adv_vrc6_square2_0)
+  .byte CAL,<(_robot_adv_vrc6_square2_0),>(_robot_adv_vrc6_square2_0)
+  .byte CAL,<(_robot_adv_vrc6_square2_0),>(_robot_adv_vrc6_square2_0)
+  .byte GOT
+  .word _robot_adv_vrc6_square2_loop
+
+_robot_adv_vrc6_saw:
+_robot_adv_vrc6_saw_loop:
+  .byte CAL,<(_robot_adv_vrc6_saw_0),>(_robot_adv_vrc6_saw_0)
+  .byte CAL,<(_robot_adv_vrc6_saw_0),>(_robot_adv_vrc6_saw_0)
+  .byte CAL,<(_robot_adv_vrc6_saw_0),>(_robot_adv_vrc6_saw_0)
+  .byte CAL,<(_robot_adv_vrc6_saw_0),>(_robot_adv_vrc6_saw_0)
+  .byte GOT
+  .word _robot_adv_vrc6_saw_loop
+
 _robot_adv_square1_0:
-  .byte STI,19,SL1,DS3,D3,C3,D3,SL4,C3,SL1,C3,STI,28,A0,STI,19
-  .byte C3,STI,28,A0,STI,19,C3,C3,STI,28,SL2,A0,STI,19,SL1,D3,C3
-  .byte B2,C3,SL4,B2,SL1,B2,STI,28,A0,STI,19,B2,STI,28,A0,STI,19
-  .byte B2,B2,STI,28,SL2,A0,STI,19,SL1,C3,B2,A2,B2,SL8,A2,SL4
+  .byte STI,19,SL1,DS3,D3,C3,D3,SL4,C3,SL1,C3,STI,29,A0,STI,19
+  .byte C3,STI,29,A0,STI,19,C3,C3,STI,29,SL2,A0,STI,19,SL1,D3,C3
+  .byte B2,C3,SL4,B2,SL1,B2,STI,29,A0,STI,19,B2,STI,29,A0,STI,19
+  .byte B2,B2,STI,29,SL2,A0,STI,19,SL1,C3,B2,A2,B2,SL8,A2,SL4
   .byte A2,SL8,G2,SL1,DS3,D3,C3,B2,C3,B2,A2,G2
   .byte RET
 
 _robot_adv_square1_1:
-  .byte STI,19,SL1,DS3,D3,C3,D3,SL4,C3,SL1,C3,STI,28,A0,STI,19
-  .byte C3,STI,28,A0,STI,19,C3,C3,STI,28,SL2,A0,STI,19,SL1,D3,C3
-  .byte B2,C3,SL4,B2,SL1,B2,STI,28,A0,STI,19,B2,STI,28,A0,STI,19
-  .byte B2,B2,STI,28,SL2,A0,STI,19,SL1,C3,B2,A2,B2,SL8,A2,SL4
+  .byte STI,19,SL1,DS3,D3,C3,D3,SL4,C3,SL1,C3,STI,29,A0,STI,19
+  .byte C3,STI,29,A0,STI,19,C3,C3,STI,29,SL2,A0,STI,19,SL1,D3,C3
+  .byte B2,C3,SL4,B2,SL1,B2,STI,29,A0,STI,19,B2,STI,29,A0,STI,19
+  .byte B2,B2,STI,29,SL2,A0,STI,19,SL1,C3,B2,A2,B2,SL8,A2,SL4
   .byte A2,SL8,G2,SL1,DS3,D3,C3,B2,C3,B2,C3,D3
   .byte RET
 
@@ -365,18 +400,18 @@ _robot_adv_square1_3:
   .byte RET
 
 _robot_adv_square2_0:
-  .byte STI,19,SL1,G3,F3,DS3,F3,SL4,DS3,SL1,DS3,STI,28,A0,STI,19
-  .byte DS3,STI,28,A0,STI,19,DS3,DS3,STI,28,SL2,A0,STI,19,SL1
-  .byte F3,DS3,D3,DS3,SL4,D3,SL1,D3,STI,28,A0,STI,19,D3,STI,28
-  .byte A0,STI,19,D3,D3,STI,28,SL2,A0,STI,19,SL1,DS3,D3,C3,D3,SL8
+  .byte STI,19,SL1,G3,F3,DS3,F3,SL4,DS3,SL1,DS3,STI,29,A0,STI,19
+  .byte DS3,STI,29,A0,STI,19,DS3,DS3,STI,29,SL2,A0,STI,19,SL1
+  .byte F3,DS3,D3,DS3,SL4,D3,SL1,D3,STI,29,A0,STI,19,D3,STI,29
+  .byte A0,STI,19,D3,D3,STI,29,SL2,A0,STI,19,SL1,DS3,D3,C3,D3,SL8
   .byte C3,SL4,FS3,SL8,G3,SL1,G3,F3,DS3,D3,DS3,D3,C3,B2
   .byte RET
 
 _robot_adv_square2_1:
-  .byte STI,19,SL1,G3,F3,DS3,F3,SL4,DS3,SL1,DS3,STI,28,A0,STI,19
-  .byte DS3,STI,28,A0,STI,19,DS3,DS3,STI,28,SL2,A0,STI,19,SL1
-  .byte F3,DS3,D3,DS3,SL4,D3,SL1,D3,STI,28,A0,STI,19,D3,STI,28
-  .byte A0,STI,19,D3,D3,STI,28,SL2,A0,STI,19,SL1,DS3,D3,C3,D3,SL8
+  .byte STI,19,SL1,G3,F3,DS3,F3,SL4,DS3,SL1,DS3,STI,29,A0,STI,19
+  .byte DS3,STI,29,A0,STI,19,DS3,DS3,STI,29,SL2,A0,STI,19,SL1
+  .byte F3,DS3,D3,DS3,SL4,D3,SL1,D3,STI,29,A0,STI,19,D3,STI,29
+  .byte A0,STI,19,D3,D3,STI,29,SL2,A0,STI,19,SL1,DS3,D3,C3,D3,SL8
   .byte C3,SL4,A3,SL8,B3,SL1,G3,F3,DS3,D3,DS3,D3,DS3,F3
   .byte RET
 
@@ -393,59 +428,59 @@ _robot_adv_square2_3:
   .byte RET
 
 _robot_adv_triangle_0:
-  .byte STI,27,SL1,C3,STI,28,A0,STI,27,C3,STI,28,A0,STI,27
-  .byte SL3,C3,STI,28,SL1,A0,STI,27,SL3,C3,STI,28,SL1,A0,STI,27
-  .byte SL3,C3,STI,28,SL1,A0,STI,27,G3,STI,28,A0,STI,27,G3,STI,28
-  .byte A0,STI,27,SL3,G3,STI,28,SL1,A0,STI,27,SL3,G3,STI,28
-  .byte SL1,A0,STI,27,SL3,G3,STI,28,SL1,A0,STI,27,A3,STI,28
-  .byte A0,STI,27,A3,STI,28,A0,STI,27,SL3,A3,STI,28,SL1,A0,STI,27
-  .byte SL3,FS3,STI,28,SL1,A0,STI,27,SL3,FS3,STI,28,SL1,A0,STI,27
-  .byte G3,STI,28,A0,STI,27,G3,STI,28,A0,STI,27,SL3,G3,STI,28
-  .byte SL1,A0,STI,27,SL3,G3,STI,28,SL1,A0,STI,27,SL3,D3,STI,28
+  .byte STI,28,SL1,C3,STI,29,A0,STI,28,C3,STI,29,A0,STI,28
+  .byte SL3,C3,STI,29,SL1,A0,STI,28,SL3,C3,STI,29,SL1,A0,STI,28
+  .byte SL3,C3,STI,29,SL1,A0,STI,28,G3,STI,29,A0,STI,28,G3,STI,29
+  .byte A0,STI,28,SL3,G3,STI,29,SL1,A0,STI,28,SL3,G3,STI,29
+  .byte SL1,A0,STI,28,SL3,G3,STI,29,SL1,A0,STI,28,A3,STI,29
+  .byte A0,STI,28,A3,STI,29,A0,STI,28,SL3,A3,STI,29,SL1,A0,STI,28
+  .byte SL3,FS3,STI,29,SL1,A0,STI,28,SL3,FS3,STI,29,SL1,A0,STI,28
+  .byte G3,STI,29,A0,STI,28,G3,STI,29,A0,STI,28,SL3,G3,STI,29
+  .byte SL1,A0,STI,28,SL3,G3,STI,29,SL1,A0,STI,28,SL3,D3,STI,29
   .byte SL1,A0
   .byte RET
 
 _robot_adv_triangle_1:
-  .byte STI,27,SL1,C3,STI,28,A0,STI,27,C3,STI,28,A0,STI,27
-  .byte SL3,C3,STI,28,SL1,A0,STI,27,SL3,C3,STI,28,SL1,A0,STI,27
-  .byte SL3,C3,STI,28,SL1,A0,STI,27,G3,STI,28,A0,STI,27,G3,STI,28
-  .byte A0,STI,27,SL3,G3,STI,28,SL1,A0,STI,27,SL3,G3,STI,28
-  .byte SL1,A0,STI,27,SL3,G3,STI,28,SL1,A0,STI,27,A3,STI,28
-  .byte A0,STI,27,A3,STI,28,A0,STI,27,SL3,A3,STI,28,SL1,A0,STI,27
-  .byte SL3,FS3,STI,28,SL1,A0,STI,27,SL3,FS3,STI,28,SL1,A0,STI,27
-  .byte G3,STI,28,A0,STI,27,G3,STI,28,A0,STI,27,SL3,G3,STI,28
-  .byte SL1,A0,STI,27,SL3,G3,STI,28,SL1,A0,STI,27,SL3,D3,STI,28
+  .byte STI,28,SL1,C3,STI,29,A0,STI,28,C3,STI,29,A0,STI,28
+  .byte SL3,C3,STI,29,SL1,A0,STI,28,SL3,C3,STI,29,SL1,A0,STI,28
+  .byte SL3,C3,STI,29,SL1,A0,STI,28,G3,STI,29,A0,STI,28,G3,STI,29
+  .byte A0,STI,28,SL3,G3,STI,29,SL1,A0,STI,28,SL3,G3,STI,29
+  .byte SL1,A0,STI,28,SL3,G3,STI,29,SL1,A0,STI,28,A3,STI,29
+  .byte A0,STI,28,A3,STI,29,A0,STI,28,SL3,A3,STI,29,SL1,A0,STI,28
+  .byte SL3,FS3,STI,29,SL1,A0,STI,28,SL3,FS3,STI,29,SL1,A0,STI,28
+  .byte G3,STI,29,A0,STI,28,G3,STI,29,A0,STI,28,SL3,G3,STI,29
+  .byte SL1,A0,STI,28,SL3,G3,STI,29,SL1,A0,STI,28,SL3,D3,STI,29
   .byte SL1,A0
   .byte RET
 
 _robot_adv_triangle_2:
-  .byte STI,27,SL1,GS2,STI,28,A0,STI,27,GS2,STI,28,A0,STI,27
-  .byte GS2,STI,28,A0,STI,27,GS2,STI,28,A0,STI,27,GS2,STI,28
-  .byte A0,STI,27,GS2,STI,28,A0,STI,27,GS2,STI,28,A0,STI,27
-  .byte GS2,STI,28,A0,STI,27,AS2,STI,28,A0,STI,27,AS2,STI,28
-  .byte A0,STI,27,AS2,STI,28,A0,STI,27,AS2,STI,28,A0,STI,27
-  .byte AS2,STI,28,A0,STI,27,AS2,STI,28,A0,STI,27,AS2,STI,28
-  .byte A0,STI,27,AS2,STI,28,A0,STI,27,B2,STI,28,A0,STI,27
-  .byte B2,STI,28,A0,STI,27,B2,STI,28,A0,STI,27,B2,STI,28,A0,STI,27
-  .byte B2,STI,28,A0,STI,27,B2,STI,28,A0,STI,27,B2,STI,28,A0,STI,27
-  .byte B2,STI,28,A0,STI,27,C3,STI,28,A0,STI,27,C3,STI,28,A0,STI,27
-  .byte C3,STI,28,A0,STI,27,C3,STI,28,A0,STI,27,C3,STI,28,A0,STI,27
-  .byte C3,STI,28,A0,STI,27,C3,STI,28,A0,STI,27,C3,STI,28,A0
+  .byte STI,28,SL1,GS2,STI,29,A0,STI,28,GS2,STI,29,A0,STI,28
+  .byte GS2,STI,29,A0,STI,28,GS2,STI,29,A0,STI,28,GS2,STI,29
+  .byte A0,STI,28,GS2,STI,29,A0,STI,28,GS2,STI,29,A0,STI,28
+  .byte GS2,STI,29,A0,STI,28,AS2,STI,29,A0,STI,28,AS2,STI,29
+  .byte A0,STI,28,AS2,STI,29,A0,STI,28,AS2,STI,29,A0,STI,28
+  .byte AS2,STI,29,A0,STI,28,AS2,STI,29,A0,STI,28,AS2,STI,29
+  .byte A0,STI,28,AS2,STI,29,A0,STI,28,B2,STI,29,A0,STI,28
+  .byte B2,STI,29,A0,STI,28,B2,STI,29,A0,STI,28,B2,STI,29,A0,STI,28
+  .byte B2,STI,29,A0,STI,28,B2,STI,29,A0,STI,28,B2,STI,29,A0,STI,28
+  .byte B2,STI,29,A0,STI,28,C3,STI,29,A0,STI,28,C3,STI,29,A0,STI,28
+  .byte C3,STI,29,A0,STI,28,C3,STI,29,A0,STI,28,C3,STI,29,A0,STI,28
+  .byte C3,STI,29,A0,STI,28,C3,STI,29,A0,STI,28,C3,STI,29,A0
   .byte RET
 
 _robot_adv_triangle_3:
-  .byte STI,27,SL1,GS2,STI,28,A0,STI,27,GS2,STI,28,A0,STI,27
-  .byte GS2,STI,28,A0,STI,27,GS2,STI,28,A0,STI,27,GS2,STI,28
-  .byte A0,STI,27,GS2,STI,28,A0,STI,27,GS2,STI,28,A0,STI,27
-  .byte GS2,STI,28,A0,STI,27,AS2,STI,28,A0,STI,27,AS2,STI,28
-  .byte A0,STI,27,AS2,STI,28,A0,STI,27,AS2,STI,28,A0,STI,27
-  .byte AS2,STI,28,A0,STI,27,AS2,STI,28,A0,STI,27,AS2,STI,28
-  .byte A0,STI,27,AS2,STI,28,A0,STI,27,B2,STI,28,A0,STI,27
-  .byte B2,STI,28,A0,STI,27,B2,STI,28,A0,STI,27,B2,STI,28,A0,STI,27
-  .byte B2,STI,28,A0,STI,27,B2,STI,28,A0,STI,27,B2,STI,28,A0,STI,27
-  .byte B2,STI,28,A0,STI,27,C3,STI,28,A0,STI,27,C3,STI,28,A0,STI,27
-  .byte C3,STI,28,A0,STI,27,C3,STI,28,A0,STI,27,C3,STI,28,A0,STI,27
-  .byte C3,STI,28,A0,STI,27,C3,STI,28,A0,STI,27,C3,STI,28,A0
+  .byte STI,28,SL1,GS2,STI,29,A0,STI,28,GS2,STI,29,A0,STI,28
+  .byte GS2,STI,29,A0,STI,28,GS2,STI,29,A0,STI,28,GS2,STI,29
+  .byte A0,STI,28,GS2,STI,29,A0,STI,28,GS2,STI,29,A0,STI,28
+  .byte GS2,STI,29,A0,STI,28,AS2,STI,29,A0,STI,28,AS2,STI,29
+  .byte A0,STI,28,AS2,STI,29,A0,STI,28,AS2,STI,29,A0,STI,28
+  .byte AS2,STI,29,A0,STI,28,AS2,STI,29,A0,STI,28,AS2,STI,29
+  .byte A0,STI,28,AS2,STI,29,A0,STI,28,B2,STI,29,A0,STI,28
+  .byte B2,STI,29,A0,STI,28,B2,STI,29,A0,STI,28,B2,STI,29,A0,STI,28
+  .byte B2,STI,29,A0,STI,28,B2,STI,29,A0,STI,28,B2,STI,29,A0,STI,28
+  .byte B2,STI,29,A0,STI,28,C3,STI,29,A0,STI,28,C3,STI,29,A0,STI,28
+  .byte C3,STI,29,A0,STI,28,C3,STI,29,A0,STI,28,C3,STI,29,A0,STI,28
+  .byte C3,STI,29,A0,STI,28,C3,STI,29,A0,STI,28,C3,STI,29,A0
   .byte RET
 
 _robot_adv_noise_0:
@@ -481,6 +516,35 @@ _robot_adv_dpcm_0:
   .byte C3,SL3,C3,SL2,CS3,SL1,C3,SL3,C3,SL2,C3,CS3,SL1,CS3,CS3
   .byte C3,SL3,C3,SL2,CS3,SL1,C3,SL5,C3,SL2,CS3,C3,SL1,C3,SL3
   .byte C3,SL2,CS3,SL1,C3,SL3,C3,SL2,C3,SL1,CS3,CS3,CS3,CS3
+  .byte RET
+
+_robot_adv_vrc6_square1_0:
+  .byte STI,27,SL1,DS3,D3,C3,D3,SL4,C3,SL1,C3,STI,29,A0,STI,27
+  .byte C3,STI,29,A0,STI,27,C3,C3,STI,29,SL2,A0,STI,27,SL1,D3,C3
+  .byte B2,C3,SL4,B2,SL1,B2,STI,29,A0,STI,27,B2,STI,29,A0,STI,27
+  .byte B2,B2,STI,29,SL2,A0,STI,27,SL1,C3,B2,A2,B2,SL8,A2,SL4
+  .byte A2,SL8,G2,SL1,DS3,D3,C3,B2,C3,B2,C3,D3
+  .byte RET
+
+_robot_adv_vrc6_square2_0:
+  .byte STI,27,SL1,G3,F3,DS3,F3,SL4,DS3,SL1,DS3,STI,29,A0,STI,27
+  .byte DS3,STI,29,A0,STI,27,DS3,DS3,STI,29,SL2,A0,STI,27,SL1
+  .byte F3,DS3,D3,DS3,SL4,D3,SL1,D3,STI,29,A0,STI,27,D3,STI,29
+  .byte A0,STI,27,D3,D3,STI,29,SL2,A0,STI,27,SL1,DS3,D3,C3,D3,SL8
+  .byte C3,SL4,FS3,SL8,G3,SL1,G3,F3,DS3,D3,DS3,D3,C3,B2
+  .byte RET
+
+_robot_adv_vrc6_saw_0:
+  .byte STI,27,SL1,C3,STI,29,A0,STI,27,C3,STI,29,A0,STI,27
+  .byte SL3,C3,STI,29,SL1,A0,STI,27,SL3,C3,STI,29,SL1,A0,STI,27
+  .byte SL3,C3,STI,29,SL1,A0,STI,27,G3,STI,29,A0,STI,27,G3,STI,29
+  .byte A0,STI,27,SL3,G3,STI,29,SL1,A0,STI,27,SL3,G3,STI,29
+  .byte SL1,A0,STI,27,SL3,G3,STI,29,SL1,A0,STI,27,A3,STI,29
+  .byte A0,STI,27,A3,STI,29,A0,STI,27,SL3,A3,STI,29,SL1,A0,STI,27
+  .byte SL3,FS3,STI,29,SL1,A0,STI,27,SL3,FS3,STI,29,SL1,A0,STI,27
+  .byte G3,STI,29,A0,STI,27,G3,STI,29,A0,STI,27,SL3,G3,STI,29
+  .byte SL1,A0,STI,27,SL3,G3,STI,29,SL1,A0,STI,27,SL3,D3,STI,29
+  .byte SL1,A0
   .byte RET
 
 _k466:
@@ -537,7 +601,7 @@ _k466_triangle_loop:
   .word _k466_triangle_loop
 
 _k466_square1_0:
-  .byte STI,28,SL3,A0,STI,0,GS4,C5,GS4,F4,C4,CS4,GS3,AS3,G4,AS4
+  .byte STI,29,SL3,A0,STI,0,GS4,C5,GS4,F4,C4,CS4,GS3,AS3,G4,AS4
   .byte G4,E4,C4,CS4,AS3
   .byte RET
 
@@ -611,7 +675,7 @@ _k466_square2_7:
   .byte RET
 
 _k466_triangle_0:
-  .byte STI,28,SLL,24,A0,STI,0,SLC,F3,E3
+  .byte STI,29,SLL,24,A0,STI,0,SLC,F3,E3
   .byte RET
 
 _k466_triangle_1:
@@ -623,7 +687,7 @@ _k466_triangle_2:
   .byte RET
 
 _k466_triangle_3:
-  .byte STI,28,SLL,48,A0
+  .byte STI,29,SLL,48,A0
   .byte RET
 
 _k11:
@@ -977,7 +1041,7 @@ _soler42_square1_13:
   .byte RET
 
 _soler42_square2_0:
-  .byte STI,28,SL0,A0,STI,9,SL4,D3,SL2,D3,SL1,AS2,D3,SL0,G3,SL4
+  .byte STI,29,SL0,A0,STI,9,SL4,D3,SL2,D3,SL1,AS2,D3,SL0,G3,SL4
   .byte D3,SL2,D3,SL1,AS2,D3,SL0,G3,SL4,D3,SL2,D3,SL1,AS2,D3,SL8
   .byte G3,SL4,D3,SL8,D3,SL4,C3
   .byte RET
@@ -1217,7 +1281,7 @@ _antagonist_square2_0:
   .byte RET
 
 _antagonist_square2_1:
-  .byte STI,28,SLL,64,A0
+  .byte STI,29,SLL,64,A0
   .byte RET
 
 _antagonist_square2_2:
@@ -1226,7 +1290,7 @@ _antagonist_square2_2:
   .byte RET
 
 _antagonist_square2_3:
-  .byte STI,28,SL8,A0,STI,13,SL2,G2,FS2,G2,C3,SL8,DS3,F3,SL0,D3
+  .byte STI,29,SL8,A0,STI,13,SL2,G2,FS2,G2,C3,SL8,DS3,F3,SL0,D3
   .byte SL2,G2,FS2,G2,B2,SL8,G3
   .byte RET
 
