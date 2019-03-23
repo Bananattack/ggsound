@@ -1261,7 +1261,7 @@ return_from_arpeggio_callback:
     sta stream_channel_register_3,x
     ;Load high byte of note.
     lda vrc6_saw_note_table_hi,y
-    ora #$80    
+    ora #$80
     sta stream_channel_register_4,x
 pitch_already_loaded:
 
@@ -1293,10 +1293,12 @@ skip_volume_loop:
     ;length counter disabled but preserving current duty cycle.
     lda stream_channel_register_1,x
     and #%11000000
-    ora #%00110000
+    sta sound_local_byte_0
 
     ;Load current volume value.
-    ora (sound_local_word_0),y
+    lda (sound_local_word_0),y
+    asl a
+    ora sound_local_byte_0
     sta stream_channel_register_1,x
 
     inc stream_volume_offset,x
@@ -1307,7 +1309,6 @@ volume_stop:
 silence_until_note:
     lda stream_channel_register_1,x
     and #%11000000
-    ora #%00110000
     sta stream_channel_register_1,x
 
 done:
@@ -1387,9 +1388,14 @@ duty_code:
 skip_duty_loop:
 
     ;Or the duty value into the register.
+    lda (sound_local_word_0),y
+    lsr a
+    lsr a
+    and #$20
+    sta sound_local_byte_0
+
     lda stream_channel_register_1,x
-    and #%00111111
-    ora (sound_local_word_0),y
+    ora sound_local_byte_0
     sta stream_channel_register_1,x
 
     ;Move duty offset along.
