@@ -59,6 +59,9 @@ lo_byte_operator = "<"
 hi_byte_operator = ">"
 define_byte_directive = "  .byte "
 define_word_directive = "  .word "
+instrument_type_to_duty_lambda = {"INST2A03": lambda v: v << 6,
+                                  "INSTVRC6": lambda v: v << 4}
+
 
 #Splits a note string, formats the note and converts the instrument index to an integer
 def process_note(note):
@@ -391,6 +394,7 @@ def main():
                 instrument["id"] = int(inst_split_line[1])
                 instrument["index"] = instruments.index(instrument)
                 instrument["name"] = sanitize_label("%s_%s" % ("_".join(inst_split_line[7:]).replace("\"", ""), instrument["index"]))
+                instrument["type"] = split_line[0]
                 instrument_id_to_index[instrument["id"]] = instrument["index"]
 
             if split_line[0] == "TRACK":
@@ -523,6 +527,7 @@ def main():
     instrument["arpeggio"] = default_arpeggio_index
     instrument["pitch"] = flat_pitch_index
     instrument["duty"] = default_duty_index
+    instrument["type"] = "INST2A03"
     instruments.append(instrument)
 
     #generate dpcm sample file, if we have any dpcm samples
@@ -609,7 +614,7 @@ def main():
             if ARPEGGIOS_ENABLED:
                 instrument_macros.append(arpeggio_macro)
             prefixes = ["", "", "DUTY_", ""]
-            value_lambdas = [lambda v: v, lambda v: v, lambda v: v << 6, lambda v: v]
+            value_lambdas = [lambda v: v, lambda v: v, instrument_type_to_duty_lambda[instrument["type"]], lambda v: v]
 
             for i in range(0, len(instrument_macros)):
                 macro = instrument_macros[i]
