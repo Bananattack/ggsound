@@ -7,7 +7,6 @@ stream_note_length_counter_hi: .rs MAX_STREAMS
 stream_instrument_index:       .rs MAX_STREAMS
 stream_volume_offset:          .rs MAX_STREAMS
   ifdef FEATURE_ARPEGGIOS
-stream_arpeggio_index:         .rs MAX_STREAMS
 stream_arpeggio_offset:        .rs MAX_STREAMS
   endif
 stream_pitch_offset:           .rs MAX_STREAMS

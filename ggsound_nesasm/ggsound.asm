@@ -90,6 +90,13 @@ sound_initialize:
     lda #%00001111
     sta $4015
 
+  ifdef FEATURE_VRC6
+    ;Initialize the VRC6 frequency control register to default
+    ;frequency multiplier and disable halt flag.
+    lda #%00000000
+    sta vrc6_reg_freq_ctrl
+  endif
+
     ;Ensure no apu data is uploaded yet.
     lda #0
     sta apu_data_ready
@@ -273,6 +280,28 @@ pal_note_table_hi:
     .db high($0031), high($002E), high($002B), high($0029), high($0026), high($0024), high($0022), high($0020), high($001E), high($001D), high($001B), high($0019)
     .db high($0018), high($0016), high($0015), high($0014), high($0013), high($0012), high($0011), high($0010), high($000F), high($000E), high($000D), high($000C)
 
+  ifdef FEATURE_VRC6
+vrc6_saw_note_table_lo:
+    .db low($0F44), low($0E69), low($0D9A), low($0CD6), low($0C1E), low($0B70), low($0ACB), low($0A30), low($099E), low($0913), low($0891), low($0816)
+    .db low($07A2), low($0734), low($06CC), low($066B), low($060E), low($05B7), low($0565), low($0518), low($04CE), low($0489), low($0448), low($040A)
+    .db low($03D0), low($0399), low($0366), low($0335), low($0307), low($02DB), low($02B2), low($028B), low($0267), low($0244), low($0223), low($0205)
+    .db low($01E8), low($01CC), low($01B2), low($019A), low($0183), low($016D), low($0159), low($0145), low($0133), low($0122), low($0111), low($0102)
+    .db low($00F3), low($00E6), low($00D9), low($00CC), low($00C1), low($00B6), low($00AC), low($00A2), low($0099), low($0090), low($0088), low($0080)
+    .db low($0079), low($0072), low($006C), low($0066), low($0060), low($005B), low($0055), low($0051), low($004C), low($0048), low($0044), low($0040)
+    .db low($003C), low($0039), low($0035), low($0032), low($002F), low($002D), low($002A), low($0028), low($0025), low($0023), low($0021), low($001F)
+    .db low($001E), low($001C), low($001A), low($0019), low($0017), low($0016), low($0015), low($0013), low($0012), low($0011), low($0010), low($000F)
+
+vrc6_saw_note_table_hi:
+    .db high($0F44), high($0E69), high($0D9A), high($0CD6), high($0C1E), high($0B70), high($0ACB), high($0A30), high($099E), high($0913), high($0891), high($0816)
+    .db high($07A2), high($0734), high($06CC), high($066B), high($060E), high($05B7), high($0565), high($0518), high($04CE), high($0489), high($0448), high($040A)
+    .db high($03D0), high($0399), high($0366), high($0335), high($0307), high($02DB), high($02B2), high($028B), high($0267), high($0244), high($0223), high($0205)
+    .db high($01E8), high($01CC), high($01B2), high($019A), high($0183), high($016D), high($0159), high($0145), high($0133), high($0122), high($0111), high($0102)
+    .db high($00F3), high($00E6), high($00D9), high($00CC), high($00C1), high($00B6), high($00AC), high($00A2), high($0099), high($0090), high($0088), high($0080)
+    .db high($0079), high($0072), high($006C), high($0066), high($0060), high($005B), high($0055), high($0051), high($004C), high($0048), high($0044), high($0040)
+    .db high($003C), high($0039), high($0035), high($0032), high($002F), high($002D), high($002A), high($0028), high($0025), high($0023), high($0021), high($001F)
+    .db high($001E), high($001C), high($001A), high($0019), high($0017), high($0016), high($0015), high($0013), high($0012), high($0011), high($0010), high($000F)
+  endif
+
 ;Maps NTSC to NTSC tempo, maps PAL and Dendy to
 ;faster PAL tempo in song and sfx headers.
 sound_region_to_tempo_offset:
@@ -286,6 +315,11 @@ channel_callback_table_lo:
       ifdef FEATURE_DPCM
     .db low(dpcm_play_note)
       endif
+      ifdef FEATURE_VRC6
+    .db low(vrc6_square_1_play_note)
+    .db low(vrc6_square_2_play_note)
+    .db low(vrc6_saw_play_note)
+      endif
 
 channel_callback_table_hi:
     .db high(square_1_play_note)
@@ -295,6 +329,11 @@ channel_callback_table_hi:
       ifdef FEATURE_DPCM
     .db high(dpcm_play_note)
       endif
+      ifdef FEATURE_VRC6
+    .db high(vrc6_square_1_play_note)
+    .db high(vrc6_square_2_play_note)
+    .db high(vrc6_saw_play_note)
+      endif    
 
 stream_callback_table_lo:
     .db low(stream_set_length_s)
@@ -883,6 +922,390 @@ dpcm_play_note:
 .note_already_played:
 
     rts
+
+  endif
+
+; TODO: add play_note subroutines for 2 pulses (use same technique as square channels) and 1 sawtooth
+  ifdef FEATURE_VRC6
+
+vrc6_square_1_play_note:
+
+    ;Load instrument index.
+    ldy stream_instrument_index,x
+    ;Load instrument address.
+    lda [addr_instruments],y
+    sta sound_local_word_0
+    iny
+    lda [addr_instruments],y
+    sta sound_local_word_0+1
+
+      ifdef FEATURE_ARPEGGIOS
+
+    ;Get arpeggio type.
+    ldy #instrument_header_arpeggio_type
+    lda [sound_local_word_0],y
+    tay
+
+    ;Get the address.
+    lda #high((.return_from_arpeggio_callback-1))
+    pha
+    lda #low((.return_from_arpeggio_callback-1))
+    pha
+    lda arpeggio_callback_table_hi,y
+    pha
+    lda arpeggio_callback_table_lo,y
+    pha
+    rts
+.return_from_arpeggio_callback:
+
+      else
+
+    ldy stream_note,x
+
+      endif
+
+    ;Skip loading note pitch if already loaded, to allow envelopes
+    ;to modify the pitch.
+    lda stream_flags,x
+    and #STREAM_PITCH_LOADED_TEST
+    bne .pitch_already_loaded
+    lda stream_flags,x
+    ora #STREAM_PITCH_LOADED_SET
+    sta stream_flags,x
+    ;Load low byte of note.
+    lda [addr_note_table_lo],y
+    ;Store in low 8 bits of pitch.
+    sta stream_channel_register_3,x
+    ;Load high byte of note.
+    lda [addr_note_table_hi],y
+    ora #$80
+    sta stream_channel_register_4,x
+.pitch_already_loaded:
+
+    lda stream_flags,x
+    and #STREAM_SILENCE_TEST
+    bne .silence_until_note
+.note_not_silenced:
+
+    ;Load volume offset.
+    ldy stream_volume_offset,x
+
+    ;Load volume value for this frame, branch if opcode.
+    lda [sound_local_word_0],y
+    cmp #ENV_STOP
+    beq .volume_stop
+    cmp #ENV_LOOP
+    bne .skip_volume_loop
+
+    ;We hit a loop opcode, advance envelope index and load loop point.
+    iny
+    lda [sound_local_word_0],y
+    sta stream_volume_offset,x
+    tay
+
+.skip_volume_loop:
+
+    ;Initialize channel control register with envelope decay and
+    ;length counter disabled but preserving current duty cycle.
+    lda stream_channel_register_1,x
+    and #%01110000
+
+    ;Load current volume value.
+    ora [sound_local_word_0],y
+    sta stream_channel_register_1,x
+
+    inc stream_volume_offset,x
+
+.volume_stop:
+
+    jmp .done
+.silence_until_note:
+    lda stream_channel_register_1,x
+    and #%01110000
+    sta stream_channel_register_1,x
+
+.done:
+
+    ;Load pitch offset.
+    ldy stream_pitch_offset,x
+
+    ;Load pitch value.
+    lda [sound_local_word_0],y
+    cmp #ENV_STOP
+    beq .pitch_stop
+    cmp #ENV_LOOP
+    bne .skip_pitch_loop
+
+    ;We hit a loop opcode, advance envelope index and load loop point.
+    iny
+    lda [sound_local_word_0],y
+    sta stream_pitch_offset,x
+    tay
+
+.skip_pitch_loop:
+
+    ;Test sign.
+    lda [sound_local_word_0],y
+    bmi .pitch_delta_negative
+.pitch_delta_positive:
+
+    clc
+    lda stream_channel_register_3,x
+    adc [sound_local_word_0],y
+    sta stream_channel_register_3,x
+    lda stream_channel_register_4,x
+    and #$0f
+    adc #0
+    ora #$80
+    sta stream_channel_register_4,x
+
+    jmp .pitch_delta_test_done
+
+.pitch_delta_negative:
+
+    clc
+    lda stream_channel_register_3,x
+    adc [sound_local_word_0],y
+    sta stream_channel_register_3,x
+    lda stream_channel_register_4,x
+    and #$0f
+    adc #$ff
+    ora #$80
+    sta stream_channel_register_4,x
+
+.pitch_delta_test_done:
+
+    ;Move pitch offset along.
+    inc stream_pitch_offset,x
+
+.pitch_stop:
+
+.duty_code:
+
+    ldy stream_duty_offset,x
+
+    ;Load duty value for this frame, but hard code flags and duty for now.
+    lda [sound_local_word_0],y
+    cmp #DUTY_ENV_STOP
+    beq .duty_stop
+    cmp #DUTY_ENV_LOOP
+    bne .skip_duty_loop
+
+    ;We hit a loop opcode, advance envelope index and load loop point.
+    iny
+    lda [sound_local_word_0],y
+    sta stream_duty_offset,x
+    tay
+
+.skip_duty_loop:
+
+    ;Or the duty value into the register.
+    lda stream_channel_register_1,x
+    and #%00001111
+    ora [sound_local_word_0],y
+    sta stream_channel_register_1,x
+
+    ;Move duty offset along.
+    inc stream_duty_offset,x
+
+.duty_stop:
+
+    rts
+
+
+vrc6_square_2_play_note = vrc6_square_1_play_note
+
+vrc6_saw_play_note:
+
+    ;Load instrument index.
+    ldy stream_instrument_index,x
+    ;Load instrument address.
+    lda [addr_instruments],y
+    sta sound_local_word_0
+    iny
+    lda [addr_instruments],y
+    sta sound_local_word_0+1
+
+      ifdef FEATURE_ARPEGGIOS
+
+    ;Get arpeggio type.
+    ldy #instrument_header_arpeggio_type
+    lda [sound_local_word_0],y
+    tay
+
+    ;Get the address.
+    lda #high((.return_from_arpeggio_callback-1))
+    pha
+    lda #low((.return_from_arpeggio_callback-1))
+    pha
+    lda arpeggio_callback_table_hi,y
+    pha
+    lda arpeggio_callback_table_lo,y
+    pha
+    rts
+.return_from_arpeggio_callback:
+
+      else
+
+    ldy stream_note,x
+
+      endif
+
+    ;Skip loading note pitch if already loaded, to allow envelopes
+    ;to modify the pitch.
+    lda stream_flags,x
+    and #STREAM_PITCH_LOADED_TEST
+    bne .pitch_already_loaded
+    lda stream_flags,x
+    ora #STREAM_PITCH_LOADED_SET
+    sta stream_flags,x
+    ;Load low byte of note.
+    lda vrc6_saw_note_table_lo,y
+    ;Store in low 8 bits of pitch.
+    sta stream_channel_register_3,x
+    ;Load high byte of note.
+    lda vrc6_saw_note_table_hi,y
+    ora #$80
+    sta stream_channel_register_4,x
+.pitch_already_loaded:
+
+    lda stream_flags,x
+    and #STREAM_SILENCE_TEST
+    bne .silence_until_note
+.note_not_silenced:
+
+    ;Load volume offset.
+    ldy stream_volume_offset,x
+
+    ;Load volume value for this frame, branch if opcode.
+    lda [sound_local_word_0],y
+    cmp #ENV_STOP
+    beq .volume_stop
+    cmp #ENV_LOOP
+    bne .skip_volume_loop
+
+    ;We hit a loop opcode, advance envelope index and load loop point.
+    iny
+    lda [sound_local_word_0],y
+    sta stream_volume_offset,x
+    tay
+
+.skip_volume_loop:
+
+    ;Initialize channel control register with envelope decay and
+    ;length counter disabled but preserving current duty cycle.
+    lda stream_channel_register_1,x
+    and #%11000000
+    sta sound_local_byte_0
+
+    ;Load current volume value.
+    lda [sound_local_word_0],y
+    asl a a
+    ora sound_local_byte_0
+    sta stream_channel_register_1,x
+
+    inc stream_volume_offset,x
+
+.volume_stop:
+
+    jmp .done
+.silence_until_note:
+    lda stream_channel_register_1,x
+    and #%11000000
+    sta stream_channel_register_1,x
+
+.done:
+
+    ;Load pitch offset.
+    ldy stream_pitch_offset,x
+
+    ;Load pitch value.
+    lda [sound_local_word_0],y
+    cmp #ENV_STOP
+    beq .pitch_stop
+    cmp #ENV_LOOP
+    bne .skip_pitch_loop
+
+    ;We hit a loop opcode, advance envelope index and load loop point.
+    iny
+    lda [sound_local_word_0],y
+    sta stream_pitch_offset,x
+    tay
+
+.skip_pitch_loop:
+
+    ;Test sign.
+    lda [sound_local_word_0],y
+    bmi .pitch_delta_negative
+.pitch_delta_positive:
+
+    clc
+    lda stream_channel_register_3,x
+    adc [sound_local_word_0],y
+    sta stream_channel_register_3,x
+    lda stream_channel_register_4,x
+    and #$0f
+    adc #0
+    ora #$80
+    sta stream_channel_register_4,x
+
+    jmp .pitch_delta_test_done
+
+.pitch_delta_negative:
+
+    clc
+    lda stream_channel_register_3,x
+    adc [sound_local_word_0],y
+    sta stream_channel_register_3,x
+    lda stream_channel_register_4,x
+    and #$0f
+    adc #$ff
+    ora #$80
+    sta stream_channel_register_4,x
+
+.pitch_delta_test_done:
+
+    ;Move pitch offset along.
+    inc stream_pitch_offset,x
+
+.pitch_stop:
+
+.duty_code:
+
+    ldy stream_duty_offset,x
+
+    ;Load duty value for this frame, but hard code flags and duty for now.
+    lda [sound_local_word_0],y
+    cmp #DUTY_ENV_STOP
+    beq .duty_stop
+    cmp #DUTY_ENV_LOOP
+    bne .skip_duty_loop
+
+    ;We hit a loop opcode, advance envelope index and load loop point.
+    iny
+    lda [sound_local_word_0],y
+    sta stream_duty_offset,x
+    tay
+
+.skip_duty_loop:
+
+    ;Or the duty value into the register.
+    lda [sound_local_word_0],y
+    lsr a
+    and #%00100000
+    sta sound_local_byte_0
+    lda stream_channel_register_1,x
+    and #%00011111
+    ora sound_local_byte_0
+    sta stream_channel_register_1,x
+
+    ;Move duty offset along.
+    inc stream_duty_offset,x
+
+.duty_stop:
+
+    rts
+
 
   endif
 
@@ -1487,6 +1910,110 @@ play_song:
 .no_dpcm:
       endif
 
+      ifdef FEATURE_VRC6
+    ;Load VRC6 square 1 stream.
+    ldx #START_STREAM_VRC6
+    jsr stream_stop
+
+    ldy #track_header_vrc6_square1_stream_address
+    lda [song_address],y
+    sta sound_param_word_0
+    iny
+    lda [song_address],y
+    beq .no_vrc6_square_1
+    sta sound_param_word_0+1
+
+    lda #START_STREAM_VRC6
+    sta sound_param_byte_0
+
+    lda #START_STREAM_VRC6
+    sta sound_param_byte_1
+
+    jsr stream_initialize
+
+    clc
+    lda #track_header_ntsc_tempo_lo
+    adc sound_local_byte_0
+    tay
+    lda [song_address],y
+    sta stream_tempo_lo,x
+    sta stream_tempo_counter_lo,x
+
+    iny
+    lda [song_address],y
+    sta stream_tempo_hi,x
+    sta stream_tempo_counter_hi,x
+.no_vrc6_square_1:
+
+    ;Load VRC6 square 2 stream.
+    ldx #START_STREAM_VRC6+1
+    jsr stream_stop
+
+    ldy #track_header_vrc6_square2_stream_address
+    lda [song_address],y
+    sta sound_param_word_0
+    iny
+    lda [song_address],y
+    beq .no_vrc6_square_2
+    sta sound_param_word_0+1
+
+    lda #START_STREAM_VRC6+1
+    sta sound_param_byte_0
+
+    lda #START_STREAM_VRC6+1
+    sta sound_param_byte_1
+
+    jsr stream_initialize
+
+    clc
+    lda #track_header_ntsc_tempo_lo
+    adc sound_local_byte_0
+    tay
+    lda [song_address],y
+    sta stream_tempo_lo,x
+    sta stream_tempo_counter_lo,x
+
+    iny
+    lda [song_address],y
+    sta stream_tempo_hi,x
+    sta stream_tempo_counter_hi,x
+.no_vrc6_square_2:
+
+    ;Load VRC6 saw stream.
+    ldx #START_STREAM_VRC6+2
+    jsr stream_stop
+
+    ldy #track_header_vrc6_saw_stream_address
+    lda [song_address],y
+    sta sound_param_word_0
+    iny
+    lda [song_address],y
+    beq .no_vrc6_saw
+    sta sound_param_word_0+1
+
+    lda #START_STREAM_VRC6+2
+    sta sound_param_byte_0
+
+    lda #START_STREAM_VRC6+2
+    sta sound_param_byte_1
+
+    jsr stream_initialize
+
+    clc
+    lda #track_header_ntsc_tempo_lo
+    adc sound_local_byte_0
+    tay
+    lda [song_address],y
+    sta stream_tempo_lo,x
+    sta stream_tempo_counter_lo,x
+
+    iny
+    lda [song_address],y
+    sta stream_tempo_hi,x
+    sta stream_tempo_counter_hi,x
+.no_vrc6_saw:
+      endif
+
     dec sound_disable_update
 
     ;Restore index regs.
@@ -1643,7 +2170,9 @@ play_sfx:
 
     lda sound_local_byte_0
     cmp #(soundeffect_two + 1)
-    beq .no_more_sfx_streams_available
+    bne .skip2
+    jmp .no_more_sfx_streams_available
+.skip2:
 
     ;Load noise stream.
     ldy #track_header_noise_stream_address
@@ -1713,7 +2242,108 @@ play_sfx:
     lda #DPCM_STATE_UPLOAD_THEN_WAIT
     sta apu_dpcm_state
 .no_dpcm:
-     endif
+      endif
+
+      ifdef FEATURE_VRC6
+    ;Load VRC6 square 1 stream.
+    ldy #track_header_vrc6_square1_stream_address
+    lda [sound_local_word_0],y
+    sta sound_param_word_0
+    iny
+    lda [sound_local_word_0],y
+    beq .no_vrc6_square_1
+    sta sound_param_word_0+1
+
+    lda #START_STREAM_VRC6
+    sta sound_param_byte_0
+
+    lda sound_local_byte_0
+    sta sound_param_byte_1
+
+    jsr stream_initialize
+
+    ldx sound_local_byte_0
+    clc
+    lda #track_header_ntsc_tempo_lo
+    adc sound_local_byte_1
+    tay
+    lda [sound_local_word_0],y
+    sta stream_tempo_lo,x
+    sta stream_tempo_counter_lo,x
+    iny
+    lda [sound_local_word_0],y
+    sta stream_tempo_hi,x
+    sta stream_tempo_counter_hi,x
+
+    inc sound_local_byte_0
+.no_vrc6_square_1:
+
+    ;Load VRC6 square 1 stream.
+    ldy #track_header_vrc6_square2_stream_address
+    lda [sound_local_word_0],y
+    sta sound_param_word_0
+    iny
+    lda [sound_local_word_0],y
+    beq .no_vrc6_square_2
+    sta sound_param_word_0+1
+
+    lda #START_STREAM_VRC6+1
+    sta sound_param_byte_0
+
+    lda #START_STREAM_VRC6+1
+    sta sound_param_byte_1
+
+    jsr stream_initialize
+
+    ldx sound_local_byte_0
+    clc
+    lda #track_header_ntsc_tempo_lo
+    adc sound_local_byte_1
+    tay
+    lda [sound_local_word_0],y
+    sta stream_tempo_lo,x
+    sta stream_tempo_counter_lo,x
+    iny
+    lda [sound_local_word_0],y
+    sta stream_tempo_hi,x
+    sta stream_tempo_counter_hi,x
+
+    inc sound_local_byte_0
+.no_vrc6_square_2:
+
+    ;Load VRC6 saw stream.
+    ldy #track_header_vrc6_saw_stream_address
+    lda [sound_local_word_0],y
+    sta sound_param_word_0
+    iny
+    lda [sound_local_word_0],y
+    beq .no_vrc6_saw
+    sta sound_param_word_0+1
+
+    lda #START_STREAM_VRC6+2
+    sta sound_param_byte_0
+
+    lda #START_STREAM_VRC6+2
+    sta sound_param_byte_1
+
+    jsr stream_initialize
+
+    ldx sound_local_byte_0
+    clc
+    lda #track_header_ntsc_tempo_lo
+    adc sound_local_byte_1
+    tay
+    lda [sound_local_word_0],y
+    sta stream_tempo_lo,x
+    sta stream_tempo_counter_lo,x
+    iny
+    lda [sound_local_word_0],y
+    sta stream_tempo_hi,x
+    sta stream_tempo_counter_hi,x
+
+    inc sound_local_byte_0
+.no_vrc6_saw:
+      endif
 
 .no_more_sfx_streams_available:
 
@@ -2093,6 +2723,54 @@ sound_initialize_apu_buffer:
     sta apu_register_sets+19
       endif
 
+      ifdef FEATURE_VRC6
+    ;****************************************************************
+    ;Initialize VRC6 Square 1
+    ;****************************************************************
+    lda #0
+    sta apu_register_sets+(START_STREAM_VRC6*4)
+
+    lda #0
+    sta apu_register_sets+((START_STREAM_VRC6*4)+1)
+
+    lda #$C9
+    sta apu_register_sets+((START_STREAM_VRC6*4)+2)
+
+    lda #$00
+    sta apu_register_sets+((START_STREAM_VRC6*4)+3)
+
+    ;****************************************************************
+    ;Initialize VRC6 Square 2
+    ;****************************************************************
+    lda #0
+    sta apu_register_sets+((START_STREAM_VRC6*4)+4)
+
+    lda #0
+    sta apu_register_sets+((START_STREAM_VRC6*4)+5)
+
+    lda #$C9
+    sta apu_register_sets+((START_STREAM_VRC6*4)+6)
+
+    lda #0
+    sta apu_register_sets+((START_STREAM_VRC6*4)+7)
+
+    ;****************************************************************
+    ;Initialize VRC6 Saw
+    ;****************************************************************
+    lda #0
+    sta apu_register_sets+((START_STREAM_VRC6*4)+8)
+
+    lda #0
+    sta apu_register_sets+((START_STREAM_VRC6*4)+9)
+
+    lda #$C9
+    sta apu_register_sets+((START_STREAM_VRC6*4)+10)
+
+    lda #0
+    sta apu_register_sets+((START_STREAM_VRC6*4)+11)
+
+      endif
+
     rts
 
 sound_upload:
@@ -2153,6 +2831,32 @@ sound_upload_apu_register_sets:
     lda apu_register_sets+15
     sta $400F
 
+      ifdef FEATURE_VRC6
+.vrc6_square1:    
+    lda apu_register_sets+((START_STREAM_VRC6*4)+0)
+    sta vrc6_reg_square1+VRC6_CONTROL
+    lda apu_register_sets+((START_STREAM_VRC6*4)+2)
+    sta vrc6_reg_square1+VRC6_FREQ_LO
+    lda apu_register_sets+((START_STREAM_VRC6*4)+3)
+    sta vrc6_reg_square1+VRC6_FREQ_HI
+
+.vrc6_square2:
+    lda apu_register_sets+((START_STREAM_VRC6*4)+4)
+    sta vrc6_reg_square2+VRC6_CONTROL
+    lda apu_register_sets+((START_STREAM_VRC6*4)+6)
+    sta vrc6_reg_square2+VRC6_FREQ_LO
+    lda apu_register_sets+((START_STREAM_VRC6*4)+7)
+    sta vrc6_reg_square2+VRC6_FREQ_HI
+
+.vrc6_saw:
+    lda apu_register_sets+((START_STREAM_VRC6*4)+8)
+    sta vrc6_reg_saw+VRC6_CONTROL
+    lda apu_register_sets+((START_STREAM_VRC6*4)+10)
+    sta vrc6_reg_saw+VRC6_FREQ_LO
+    lda apu_register_sets+((START_STREAM_VRC6*4)+11)
+    sta vrc6_reg_saw+VRC6_FREQ_HI
+      endif
+
     ;Clear out all volume values from this frame in case a sound effect is killed suddenly.
     lda #%00110000
     sta apu_register_sets
@@ -2160,6 +2864,13 @@ sound_upload_apu_register_sets:
     sta apu_register_sets+12
     lda #%10000000
     sta apu_register_sets+8
+
+      ifdef FEATURE_VRC6
+    lda #0
+    sta apu_register_sets+((START_STREAM_VRC6*4)+0)
+    sta apu_register_sets+((START_STREAM_VRC6*4)+4)
+    sta apu_register_sets+((START_STREAM_VRC6*4)+8)
+      endif
 
       ifdef FEATURE_DPCM
     ;Now execute DPCM command/state machine. This state machine has logic for allowing
@@ -2220,4 +2931,3 @@ sound_upload_apu_register_sets:
       else
     rts
       endif
-

@@ -18,8 +18,8 @@ sound_param_word_2: .rs 2
 sound_param_word_3: .rs 2
 
 addr_instruments: .rs 2
-addr_note_table_lo:  .rs 2
-addr_note_table_hi:  .rs 2
+addr_note_table_lo: .rs 2
+addr_note_table_hi: .rs 2
   ifdef FEATURE_DPCM
 addr_dpcm_sample_table: .rs 2
 addr_dpcm_note_to_sample_index: .rs 2
@@ -37,4 +37,5 @@ apu_dpcm_state: .rs 1
 song_list_address: .rs 2
 sfx_list_address: .rs 2
 song_address: .rs 2
-apu_register_sets: .rs 20
+
+apu_register_sets: .rs MAX_MUSIC_STREAMS*4
