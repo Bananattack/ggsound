@@ -37,4 +37,5 @@ endif
 song_list_address: .dsb 2
 sfx_list_address: .dsb 2
 song_address: .dsb 2
-apu_register_sets: .dsb 20
+
+apu_register_sets: .dsb MAX_MUSIC_STREAMS*4

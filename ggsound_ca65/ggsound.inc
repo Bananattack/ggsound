@@ -58,7 +58,6 @@ DPCM_STATE_WAIT = 3
 .endif
 
 .ifdef FEATURE_VRC6
-
 vrc6_reg_freq_ctrl = $9003
 vrc6_reg_square1 = $9000
 vrc6_reg_square2 = $A000

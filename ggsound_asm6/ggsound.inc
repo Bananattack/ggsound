@@ -1,6 +1,8 @@
 ;Comment out these equates for features you do not wish to use.
 FEATURE_DPCM = 1
 FEATURE_ARPEGGIOS = 1
+FEATURE_VRC6 = 1
+;FEATURE_VRC6_REV_B = 1 ; swaps address lines x01 and x02
 
 ifdef FEATURE_DPCM
 DPCM_STATE_NOP = 0
@@ -9,20 +11,51 @@ DPCM_STATE_UPLOAD_THEN_WAIT = 2
 DPCM_STATE_WAIT = 3
 endif
 
+ifdef FEATURE_VRC6
+vrc6_reg_freq_ctrl = $9003
+vrc6_reg_square1 = $9000
+vrc6_reg_square2 = $A000
+vrc6_reg_saw = $B000
+
+ifdef FEATURE_VRC6_REV_B
+VRC6_CONTROL = 0
+VRC6_FREQ_LO = 2
+VRC6_FREQ_HI = 1
+else
+VRC6_CONTROL = 0
+VRC6_FREQ_LO = 1
+VRC6_FREQ_HI = 2
+endif
+
+endif
+
 ;Max number of music streams, sfx streams, and max total streams
 ;based on whether dpcm is enabled. soundeffect_one and soundeffect_two
 ;are always to be used when specifying sound effect priority.
+MAX_2A03_MUSIC_STREAMS = 4
+START_STREAM_2A03 = 0
+
 ifdef FEATURE_DPCM
-MAX_MUSIC_STREAMS = 5
-soundeffect_one = 5
-soundeffect_two = 6
+MAX_DPCM_MUSIC_STREAMS = 1
+START_STREAM_DPCM = MAX_2A03_MUSIC_STREAMS
 else
-MAX_MUSIC_STREAMS = 4
-soundeffect_one = 4
-soundeffect_two = 5
+MAX_DPCM_MUSIC_STREAMS = 0
 endif
+
+ifdef FEATURE_VRC6
+MAX_VRC6_MUSIC_STREAMS = 3
+START_STREAM_VRC6 = MAX_2A03_MUSIC_STREAMS + MAX_DPCM_MUSIC_STREAMS
+else
+MAX_VRC6_MUSIC_STREAMS = 0
+endif
+
+MAX_MUSIC_STREAMS = (MAX_2A03_MUSIC_STREAMS + MAX_DPCM_MUSIC_STREAMS + MAX_VRC6_MUSIC_STREAMS)
+soundeffect_one = MAX_MUSIC_STREAMS
+soundeffect_two = MAX_MUSIC_STREAMS + 1
+
 MAX_SFX_STREAMS = 2
 MAX_STREAMS = (MAX_MUSIC_STREAMS + MAX_SFX_STREAMS)
+
 
 ;****************************************************************
 ;The following are all opcodes. All opcodes in range 0-86 are
@@ -229,6 +262,11 @@ track_header_triangle_stream_address  = 8
 track_header_noise_stream_address     = 10
 ifdef FEATURE_DPCM
 track_header_dpcm_stream_address      = 12
+endif
+ifdef FEATURE_VRC6
+track_header_vrc6_square1_stream_address = ((START_STREAM_VRC6+0) * 2 + 4)
+track_header_vrc6_square2_stream_address = ((START_STREAM_VRC6+1) * 2 + 4)
+track_header_vrc6_saw_stream_address = ((START_STREAM_VRC6+2) * 2 + 4)
 endif
 
 instrument_header_volume_offset = 0

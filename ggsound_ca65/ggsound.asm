@@ -35,7 +35,6 @@ base_address_dpcm_note_to_loop_pitch_index: .res 2
 apu_data_ready: .res 1
 apu_square_1_old: .res 1
 apu_square_2_old: .res 1
-
 .ifdef FEATURE_DPCM
 apu_dpcm_state: .res 1
 .endif
@@ -173,7 +172,7 @@ done:
     ;Enable square 1, square 2, triangle and noise.
     lda #%00001111
     sta $4015
-    
+
 .ifdef FEATURE_VRC6
     ;Initialize the VRC6 frequency control register to default
     ;frequency multiplier and disable halt flag.
@@ -2019,7 +2018,7 @@ no_noise:
     sta stream_tempo_counter_hi,x
 no_dpcm:
     .endif
-    
+
     .ifdef FEATURE_VRC6
     ;Load VRC6 square 1 stream.
     ldx #START_STREAM_VRC6
@@ -2354,7 +2353,7 @@ no_noise:
     sta apu_dpcm_state
 no_dpcm:
     .endif
-   
+
     .ifdef FEATURE_VRC6
     ;Load VRC6 square 1 stream.
     ldy #track_header_vrc6_square1_stream_address
@@ -2840,7 +2839,7 @@ note_length_counter_not_zero:
     lda #0
     sta apu_register_sets+19
     .endif
-    
+
     .ifdef FEATURE_VRC6
     ;****************************************************************
     ;Initialize VRC6 Square 1
