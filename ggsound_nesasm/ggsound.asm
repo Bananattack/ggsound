@@ -1200,7 +1200,7 @@ vrc6_saw_play_note:
 
     ;Load current volume value.
     lda [sound_local_word_0],y
-    asl a a
+    asl a
     ora sound_local_byte_0
     sta stream_channel_register_1,x
 

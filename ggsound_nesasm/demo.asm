@@ -8,7 +8,7 @@
 ;****************************************************************
   .inesprg 2   ;2x 16KB PRG code
   .ineschr 1   ;1x  8KB CHR data
-  .inesmap 0   ;mapper 0 = NROM, no bank swapping
+  .inesmap 24  ;mapper 24 = VRC6a
   .inesmir 1   ;background mirroring
 
 ;****************************************************************
@@ -100,6 +100,30 @@ vblankwait1:
 vblankwait2:
     bit $2002
     bpl vblankwait2
+
+    ;Initialize VRC6.
+    lda #$00
+    sta $8000
+    lda #$02
+    sta $C000
+    lda #$20
+    sta $B003
+    lda #$00
+    sta $D000
+    lda #$01
+    sta $D001
+    lda #$02
+    sta $D002
+    lda #$03
+    sta $D003
+    lda #$04
+    sta $E000
+    lda #$05
+    sta $E001
+    lda #$06
+    sta $E002
+    lda #$07
+    sta $E003    
 
     ;Install nmi routine for just counting nmis (detecting system)
     lda #low(vblank_get_tv_system)

@@ -1296,7 +1296,7 @@ skip_volume_loop:
 
     ;Load current volume value.
     lda (sound_local_word_0),y
-    asl a
+    asl
     ora sound_local_byte_0
     sta stream_channel_register_1,x
 
@@ -1388,7 +1388,7 @@ skip_duty_loop:
 
     ;Or the duty value into the register.
     lda (sound_local_word_0),y
-    lsr a
+    lsr
     and #%00100000
     sta sound_local_byte_0
     lda stream_channel_register_1,x

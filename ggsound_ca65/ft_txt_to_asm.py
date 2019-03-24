@@ -28,10 +28,15 @@ channels = ["square1",
             "triangle",
             "noise",
             "dpcm"]
-macros = {"volume": [],
-          "arpeggio": [],
-          "pitch": [],
-          "duty": []}
+macros = {}
+macros["2A03"] = {"volume": [],
+                  "arpeggio": [],
+                  "pitch": [],
+                  "duty": []}
+macros["VRC6"] = {"volume": [],
+                  "arpeggio": [],
+                  "pitch": [],
+                  "duty": []}                  
 dpcm_samples = []
 dpcm_sample_id_to_index = {-1: -1}
 key_dpcms = {}
@@ -53,15 +58,14 @@ default_duty_index = None
 silent_instrument_index = None
 instruments = []
 instrument_id_to_index = {-1: -1}
+instrument_type_to_duty_lambda = {"2A03": lambda v: v << 6,
+                                  "VRC6": lambda v: v << 4}
 song_tracks = []
 sfx_tracks = []
 lo_byte_operator = "<"
 hi_byte_operator = ">"
 define_byte_directive = "  .byte "
 define_word_directive = "  .word "
-instrument_type_to_duty_lambda = {"INST2A03": lambda v: v << 6,
-                                  "INSTVRC6": lambda v: v << 4}
-
 
 #Splits a note string, formats the note and converts the instrument index to an integer
 def process_note(note):
@@ -254,7 +258,7 @@ def convert_stream_to_sfx(stream):
     max_envelope_length = 0
     for envelope_type, envelope_index in zip(["volume", "arpeggio", "pitch", "duty"], [last_note_volume_index, last_note_arpeggio_index, last_note_pitch_index, last_note_duty_index]):
         if envelope_index is not None:
-            envelope_length = len(macros[envelope_type][envelope_index]["values"])
+            envelope_length = len(macros["2A03"][envelope_type][envelope_index]["values"])
             if envelope_length > max_envelope_length:
                 max_envelope_length = envelope_length
 
@@ -347,8 +351,7 @@ def main():
     with open(input_file) as f:
         lines = f.readlines()
 
-    # TODO: What other keywords do we have to look for to support VRC6?
-    #Look for MACRO, INST2A03, TRACK, COLUMNS, ORDER, PATTERN, ROW, DPCMDEF, DPCM, KEYDPCM
+    #Look for MACRO/MACROVRC6, INST2A03/VRC6, TRACK, COLUMNS, ORDER, PATTERN, ROW, DPCMDEF, DPCM, KEYDPCM
     current_pattern = None
     current_track = None
     current_dpcm_sample = None
@@ -366,8 +369,9 @@ def main():
                         channels.extend(expansion_channels[expansion_type_id])
 
             if split_line[0] == "MACRO" \
-            or split_line[0] == "MACROVRC6":
+            or split_line[0] == "MACROVRC6":                
                 macro_split_line = line.split(":")
+                macro_expansion_type = split_line[0][5:] or "2A03"
                 type_index = macro_split_line[0].split()
                 values = macro_split_line[1].split()
                 macro = {}
@@ -375,15 +379,16 @@ def main():
                 macro["loop_point"] = int(type_index[3])
                 macro["sub_type"] = int(type_index[5])
                 macro["values"] = [int(value) for value in values]
-                macros[macro_type_to_str[macro["type"]]].append(macro)
+                macros[macro_expansion_type][macro_type_to_str[macro["type"]]].append(macro)
 
                 macro["id"] = int(type_index[2])
-                macro["index"] = macros[macro_type_to_str[macro["type"]]].index(macro)
+                macro["index"] = macros[macro_expansion_type][macro_type_to_str[macro["type"]]].index(macro)
                 macro_id_to_index[macro_type_to_str[macro["type"]]][macro["id"]] = macro["index"]
 
             if split_line[0] == "INST2A03" \
             or split_line[0] == "INSTVRC6":
                 inst_split_line = line.split()
+                inst_expansion_type = split_line[0][4:] or "2A03"
                 instrument = {}
                 instrument["volume"] = macro_id_to_index["volume"][int(inst_split_line[2])]
                 instrument["arpeggio"] = macro_id_to_index["arpeggio"][int(inst_split_line[3])]
@@ -394,7 +399,7 @@ def main():
                 instrument["id"] = int(inst_split_line[1])
                 instrument["index"] = instruments.index(instrument)
                 instrument["name"] = sanitize_label("%s_%s" % ("_".join(inst_split_line[7:]).replace("\"", ""), instrument["index"]))
-                instrument["type"] = split_line[0]
+                instrument["type"] = inst_expansion_type
                 instrument_id_to_index[instrument["id"]] = instrument["index"]
 
             if split_line[0] == "TRACK":
@@ -482,42 +487,46 @@ def main():
     #add default silent volume macro for silent notes.
     macro = {}
     macro["type"] = 0
-    silent_volume_index = len(macros["volume"])
+    silent_volume_index = len(macros["2A03"]["volume"])
     macro["index"] = silent_volume_index
     macro["values"] = [0]
     macro["loop_point"] = -1
     macro["sub_type"] = 0
-    macros["volume"].append(macro)
+    macros["2A03"]["volume"].append(macro)
+    macros["VRC6"]["volume"].append(macro)
 
     #add default arpeggio macro.
     macro = {}
     macro["type"] = 1
-    default_arpeggio_index = len(macros["arpeggio"])
+    default_arpeggio_index = len(macros["2A03"]["arpeggio"])
     macro["index"] = default_arpeggio_index
     macro["values"] = []
     macro["loop_point"] = -1
     macro["sub_type"] = 0
-    macros["arpeggio"].append(macro)
+    macros["2A03"]["arpeggio"].append(macro)
+    macros["VRC6"]["arpeggio"].append(macro)
 
     #add default flat pitch envelope for instruments that don't specify a pitch envelope
     macro = {}
     macro["type"] = 2
-    flat_pitch_index = len(macros["pitch"])
+    flat_pitch_index = len(macros["2A03"]["pitch"])
     macro["index"] = flat_pitch_index
     macro["values"] = [0]
     macro["loop_point"] = -1
     macro["sub_type"] = 0
-    macros["pitch"].append(macro)
+    macros["2A03"]["pitch"].append(macro)
+    macros["VRC6"]["pitch"].append(macro)
 
     #add a standard duty envelope for instruments that don't specify a duty envelope
     macro = {}
     macro["type"] = 4
-    default_duty_index = len(macros["duty"])
+    default_duty_index = len(macros["2A03"]["duty"])
     macro["index"] = default_duty_index
     macro["values"] = [0]
     macro["loop_point"] = -1
     macro["sub_type"] = 0
-    macros["duty"].append(macro)
+    macros["2A03"]["duty"].append(macro)
+    macros["VRC6"]["duty"].append(macro)
 
     #add a silent instrument
     instrument = {}
@@ -527,7 +536,7 @@ def main():
     instrument["arpeggio"] = default_arpeggio_index
     instrument["pitch"] = flat_pitch_index
     instrument["duty"] = default_duty_index
-    instrument["type"] = "INST2A03"
+    instrument["type"] = "2A03"
     instruments.append(instrument)
 
     #generate dpcm sample file, if we have any dpcm samples
@@ -598,11 +607,12 @@ def main():
         #instruments
         for instrument in instruments:
             instrument_name = instrument["name"]
+            instrument_type = instrument["type"]
 
-            volume_macro = macros["volume"][instrument["volume"]]
-            pitch_macro = macros["pitch"][instrument["pitch"]]
-            duty_macro = macros["duty"][instrument["duty"]]
-            arpeggio_macro = macros["arpeggio"][instrument["arpeggio"]]
+            volume_macro = macros[instrument_type]["volume"][instrument["volume"]]
+            pitch_macro = macros[instrument_type]["pitch"][instrument["pitch"]]
+            duty_macro = macros[instrument_type]["duty"][instrument["duty"]]
+            arpeggio_macro = macros[instrument_type]["arpeggio"][instrument["arpeggio"]]
 
             total_bytes = 3
             if ARPEGGIOS_ENABLED:
@@ -614,7 +624,7 @@ def main():
             if ARPEGGIOS_ENABLED:
                 instrument_macros.append(arpeggio_macro)
             prefixes = ["", "", "DUTY_", ""]
-            value_lambdas = [lambda v: v, lambda v: v, instrument_type_to_duty_lambda[instrument["type"]], lambda v: v]
+            value_lambdas = [lambda v: v, lambda v: v, instrument_type_to_duty_lambda[instrument_type], lambda v: v]
 
             for i in range(0, len(instrument_macros)):
                 macro = instrument_macros[i]

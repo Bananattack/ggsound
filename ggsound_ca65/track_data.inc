@@ -54,15 +54,15 @@ dpcm_list:
   .word dpcm_note_to_loop_pitch_index
 
 _Piano_0:
-  .byte 5,19,21,37,ARP_TYPE_ABSOLUTE
+  .byte 5,19,21,23,ARP_TYPE_ABSOLUTE
   .byte 12,10,6,4,3,4,5,8,10,8,5,3,3,ENV_STOP
   .byte 0,ENV_STOP
-  .byte 0,64,128,192,256,320,384,448,384,320,256,192,128,64,DUTY_ENV_LOOP,21
+  .byte 128,DUTY_ENV_STOP
   .byte ENV_STOP
 
 _Instrument1_1:
-  .byte 5,7,9,11,ARP_TYPE_ABSOLUTE
-  .byte 15,ENV_STOP
+  .byte 5,24,26,28,ARP_TYPE_ABSOLUTE
+  .byte 11,8,7,8,10,8,5,3,1,1,2,4,5,5,3,2,1,1,ENV_STOP
   .byte 0,ENV_STOP
   .byte 64,DUTY_ENV_STOP
   .byte ENV_STOP
@@ -82,8 +82,8 @@ _Instrument3_3:
   .byte ENV_STOP
 
 _Instrument4_4:
-  .byte 5,7,9,11,ARP_TYPE_ABSOLUTE
-  .byte 15,ENV_STOP
+  .byte 5,24,26,28,ARP_TYPE_ABSOLUTE
+  .byte 11,8,7,8,10,8,5,3,1,1,2,4,5,5,3,2,1,1,ENV_STOP
   .byte 0,ENV_STOP
   .byte 128,DUTY_ENV_STOP
   .byte ENV_STOP
@@ -258,7 +258,7 @@ _Triangle_On_28:
 
 _New_instrument_29:
   .byte 5,7,9,25,ARP_TYPE_ABSOLUTE
-  .byte 15,ENV_STOP
+  .byte 12,ENV_STOP
   .byte 0,ENV_STOP
   .byte 0,16,32,48,64,80,96,112,96,80,64,48,32,16,DUTY_ENV_LOOP,9
   .byte ENV_STOP
