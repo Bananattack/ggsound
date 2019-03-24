@@ -1200,7 +1200,7 @@ vrc6_saw_play_note:
 
     ;Load current volume value.
     lda (sound_local_word_0),y
-    asl a a
+    asl a
     ora sound_local_byte_0
     sta stream_channel_register_1,x
 
@@ -1291,7 +1291,7 @@ vrc6_saw_play_note:
 
     ;Or the duty value into the register.
     lda (sound_local_word_0),y
-    lsr a
+    lsr
     and #%00100000
     sta sound_local_byte_0
     lda stream_channel_register_1,x
@@ -2931,5 +2931,3 @@ sound_upload_apu_register_sets:
     else
     rts
     endif
-
-

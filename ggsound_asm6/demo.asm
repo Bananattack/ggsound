@@ -10,9 +10,9 @@ include "ggsound.inc"
 .byte $01 ; 1 PRG-ROM block
 .byte $01 ; 1 CHR-ROM block
 ; ROM control bytes: Horizontal mirroring, no SRAM
-; or trainer, Mapper #0
-.byte $01 ;
-.byte $00 ;
+; or trainer, Mapper 024 = $18
+.byte $81 ; Vertical mirroring. SRAM disabled. No trainer. Four-screen mirroring disabled. Mapper low nybble in upper digit. mapper 024 = $18.
+.byte $10 ; Mapper high nybble in upper digit. mapper 024 = $18.
 .byte 0,0,0,0,0,0,0,0  ; pad header to 16 bytes
 
 ;****************************************************************
@@ -40,13 +40,14 @@ include "ggsound_ram.inc"
 ;****************************************************************
 ;Engine code, music data, and helper modules
 ;****************************************************************
-.base $C000
+.base $8000
 include "get_tv_system.asm"
 include "sprite.asm"
 include "ppu.asm"
 include "controller.asm"
 include "ggsound.asm"
 include "track_data.inc"
+.base $C000
 .align 64
 include "track_dpcm.inc"
 
@@ -98,6 +99,30 @@ reset:
     ;Wait for PPU to be ready.
     wait_vblank
     wait_vblank
+
+    ;Initialize VRC6.
+    lda #$00
+    sta $8000
+    lda #$02
+    sta $C000
+    lda #$20
+    sta $B003
+    lda #$00
+    sta $D000
+    lda #$01
+    sta $D001
+    lda #$02
+    sta $D002
+    lda #$03
+    sta $D003
+    lda #$04
+    sta $E000
+    lda #$05
+    sta $E001
+    lda #$06
+    sta $E002
+    lda #$07
+    sta $E003
 
     ;Install nmi routine for just counting nmis (detecting system)
     lda #<(vblank_get_tv_system)

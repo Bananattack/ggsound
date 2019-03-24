@@ -29,35 +29,37 @@ sfx_list:
   .dw _sfx_collide
 
 instrument_list:
-  .dw Piano_0
-  .dw Instrument1_1
-  .dw Instrument2_2
-  .dw Instrument3_3
-  .dw Instrument4_4
-  .dw Note_cut_5
-  .dw Shot_6
-  .dw Instrument5_7
-  .dw Laser_8
-  .dw Instrument6_9
-  .dw Instrument7_10
-  .dw Instrument8_11
-  .dw Instrument9_12
-  .dw Sing_13
-  .dw Note_Cut_14
-  .dw dpcm_15
-  .dw Sing_16
-  .dw Triangle_On_17
-  .dw SingMinArp_18
-  .dw Guitar_19
-  .dw SingMajArp_20
-  .dw SingDimArp_21
-  .dw Zap_22
-  .dw Collide_23
-  .dw Drum1_24
-  .dw Drum2_25
-  .dw Drum3_26
-  .dw Triangle_On_27
-  .dw silent_28
+  .dw _Piano_0
+  .dw _Instrument1_1
+  .dw _Instrument2_2
+  .dw _Instrument3_3
+  .dw _Instrument4_4
+  .dw _Note_cut_5
+  .dw _Shot_6
+  .dw _Instrument5_7
+  .dw _Laser_8
+  .dw _Instrument6_9
+  .dw _Instrument7_10
+  .dw _Instrument8_11
+  .dw _Instrument9_12
+  .dw _Sing_13
+  .dw _Note_Cut_14
+  .dw _dpcm_15
+  .dw _Sing_16
+  .dw _Triangle_On_17
+  .dw _SingMinArp_18
+  .dw _Guitar_19
+  .dw _SingMajArp_20
+  .dw _SingDimArp_21
+  .dw _Zap_22
+  .dw _Collide_23
+  .dw _Drum1_24
+  .dw _Drum2_25
+  .dw _Drum3_26
+  .dw _New_instrument_27
+  .dw _Triangle_On_28
+  .dw _New_instrument_29
+  .dw silent_30
 
 dpcm_list:
   .dw dpcm_samples_list
@@ -65,203 +67,217 @@ dpcm_list:
   .dw dpcm_note_to_sample_length
   .dw dpcm_note_to_loop_pitch_index
 
-Piano_0:
+_Piano_0:
   .db 5,19,21,23,ARP_TYPE_ABSOLUTE
   .db 12,10,6,4,3,4,5,8,10,8,5,3,3,ENV_STOP
   .db 0,ENV_STOP
   .db 128,DUTY_ENV_STOP
   .db ENV_STOP
 
-Instrument1_1:
+_Instrument1_1:
   .db 5,24,26,28,ARP_TYPE_ABSOLUTE
   .db 11,8,7,8,10,8,5,3,1,1,2,4,5,5,3,2,1,1,ENV_STOP
   .db 0,ENV_STOP
   .db 64,DUTY_ENV_STOP
   .db ENV_STOP
 
-Instrument2_2:
+_Instrument2_2:
   .db 5,13,15,17,ARP_TYPE_ABSOLUTE
   .db 10,10,10,10,10,10,0,ENV_STOP
   .db 0,ENV_STOP
   .db 64,DUTY_ENV_STOP
   .db ENV_STOP
 
-Instrument3_3:
+_Instrument3_3:
   .db 5,11,13,15,ARP_TYPE_ABSOLUTE
   .db 12,5,3,1,0,ENV_STOP
   .db 0,ENV_STOP
   .db 0,DUTY_ENV_STOP
   .db ENV_STOP
 
-Instrument4_4:
+_Instrument4_4:
   .db 5,24,26,28,ARP_TYPE_ABSOLUTE
   .db 11,8,7,8,10,8,5,3,1,1,2,4,5,5,3,2,1,1,ENV_STOP
   .db 0,ENV_STOP
   .db 128,DUTY_ENV_STOP
   .db ENV_STOP
 
-Note_cut_5:
+_Note_cut_5:
   .db 5,7,9,11,ARP_TYPE_ABSOLUTE
   .db 0,ENV_STOP
   .db 0,ENV_STOP
   .db 0,DUTY_ENV_STOP
   .db ENV_STOP
 
-Shot_6:
+_Shot_6:
   .db 5,38,40,42,ARP_TYPE_ABSOLUTE
   .db 15,6,10,11,11,10,9,8,7,6,5,4,3,2,2,2,2,1,1,1,1,1,1,1,1,1,1,1,1,0,0,0,ENV_STOP
   .db 0,ENV_STOP
   .db 0,DUTY_ENV_STOP
   .db ENV_STOP
 
-Instrument5_7:
+_Instrument5_7:
   .db 5,14,16,18,ARP_TYPE_ABSOLUTE
   .db 14,14,14,11,4,2,2,2,ENV_STOP
   .db 0,ENV_STOP
   .db 0,DUTY_ENV_STOP
   .db ENV_STOP
 
-Laser_8:
+_Laser_8:
   .db 5,22,37,39,ARP_TYPE_ABSOLUTE
   .db 14,13,12,11,10,9,8,8,7,6,5,4,3,2,1,0,ENV_STOP
   .db 10,10,10,10,10,10,10,10,10,10,10,10,10,10,ENV_STOP
   .db 0,DUTY_ENV_STOP
   .db ENV_STOP
 
-Instrument6_9:
+_Instrument6_9:
   .db 5,14,16,19,ARP_TYPE_ABSOLUTE
   .db 6,9,11,11,7,6,5,5,ENV_STOP
   .db 0,ENV_STOP
   .db 128,0,DUTY_ENV_STOP
   .db ENV_STOP
 
-Instrument7_10:
+_Instrument7_10:
   .db 5,12,14,16,ARP_TYPE_ABSOLUTE
   .db 15,2,0,0,0,0,ENV_STOP
   .db 0,ENV_STOP
   .db 0,DUTY_ENV_STOP
   .db ENV_STOP
 
-Instrument8_11:
+_Instrument8_11:
   .db 5,7,9,11,ARP_TYPE_ABSOLUTE
   .db 0,ENV_STOP
   .db 0,ENV_STOP
   .db 0,DUTY_ENV_STOP
   .db ENV_STOP
 
-Instrument9_12:
+_Instrument9_12:
   .db 5,14,16,18,ARP_TYPE_ABSOLUTE
   .db 9,9,9,6,2,1,1,1,ENV_STOP
   .db 0,ENV_STOP
   .db 0,DUTY_ENV_STOP
   .db ENV_STOP
 
-Sing_13:
+_Sing_13:
   .db 5,27,48,50,ARP_TYPE_ABSOLUTE
   .db 3,4,4,5,5,5,5,5,5,5,5,4,4,4,4,4,4,4,3,3,3,ENV_STOP
   .db 0,0,0,0,0,0,0,0,0,-1,-1,1,1,1,1,-1,-1,-1,-1,ENV_LOOP,38
   .db 192,DUTY_ENV_STOP
   .db ENV_STOP
 
-Note_Cut_14:
+_Note_Cut_14:
   .db 5,7,9,11,ARP_TYPE_ABSOLUTE
   .db 0,ENV_STOP
   .db 0,ENV_STOP
   .db 0,DUTY_ENV_STOP
   .db ENV_STOP
 
-dpcm_15:
+_dpcm_15:
   .db 5,14,16,18,ARP_TYPE_ABSOLUTE
   .db 8,4,3,2,2,1,1,0,ENV_STOP
   .db 0,ENV_STOP
   .db 0,DUTY_ENV_STOP
   .db ENV_STOP
 
-Sing_16:
+_Sing_16:
   .db 5,27,48,50,ARP_TYPE_ABSOLUTE
   .db 3,4,4,5,5,5,5,5,5,5,5,4,4,4,4,4,4,4,3,3,3,ENV_STOP
   .db 0,0,0,0,0,0,0,0,0,-1,-1,1,1,1,1,-1,-1,-1,-1,ENV_LOOP,38
   .db 128,DUTY_ENV_STOP
   .db ENV_STOP
 
-Triangle_On_17:
+_Triangle_On_17:
   .db 5,7,9,11,ARP_TYPE_ABSOLUTE
   .db 1,ENV_STOP
   .db 0,ENV_STOP
   .db 0,DUTY_ENV_STOP
   .db ENV_STOP
 
-SingMinArp_18:
+_SingMinArp_18:
   .db 5,27,48,50,ARP_TYPE_ABSOLUTE
   .db 3,4,4,5,5,5,5,5,5,5,5,4,4,4,4,4,4,4,3,3,3,ENV_STOP
   .db 0,0,0,0,0,0,0,0,0,-1,-1,1,1,1,1,-1,-1,-1,-1,ENV_LOOP,38
   .db 128,DUTY_ENV_STOP
   .db 0,3,7,12,ENV_LOOP,50
 
-Guitar_19:
+_Guitar_19:
   .db 5,70,91,94,ARP_TYPE_ABSOLUTE
   .db 3,3,4,5,5,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,5,5,5,5,5,5,5,5,5,5,5,5,5,5,4,4,4,4,4,4,4,4,4,3,3,3,3,3,3,3,3,3,3,3,3,2,2,2,2,2,2,1,ENV_STOP
   .db 0,0,0,0,0,0,0,0,0,-1,-1,1,1,1,1,-1,-1,-1,-1,ENV_LOOP,81
   .db 192,64,DUTY_ENV_STOP
   .db ENV_STOP
 
-SingMajArp_20:
+_SingMajArp_20:
   .db 5,27,48,50,ARP_TYPE_ABSOLUTE
   .db 3,4,4,5,5,5,5,5,5,5,5,4,4,4,4,4,4,4,3,3,3,ENV_STOP
   .db 0,0,0,0,0,0,0,0,0,-1,-1,1,1,1,1,-1,-1,-1,-1,ENV_LOOP,38
   .db 128,DUTY_ENV_STOP
   .db 0,4,7,12,ENV_LOOP,50
 
-SingDimArp_21:
+_SingDimArp_21:
   .db 5,27,48,50,ARP_TYPE_ABSOLUTE
   .db 3,4,4,5,5,5,5,5,5,5,5,4,4,4,4,4,4,4,3,3,3,ENV_STOP
   .db 0,0,0,0,0,0,0,0,0,-1,-1,1,1,1,1,-1,-1,-1,-1,ENV_LOOP,38
   .db 128,DUTY_ENV_STOP
   .db 0,3,6,12,ENV_LOOP,50
 
-Zap_22:
+_Zap_22:
   .db 5,22,24,26,ARP_TYPE_ABSOLUTE
   .db 14,13,12,11,10,9,8,8,7,6,5,4,3,2,1,0,ENV_STOP
   .db 0,ENV_STOP
   .db 64,DUTY_ENV_STOP
   .db ENV_STOP
 
-Collide_23:
+_Collide_23:
   .db 5,22,37,39,ARP_TYPE_ABSOLUTE
   .db 14,13,12,11,10,9,8,8,7,6,5,4,3,2,1,0,ENV_STOP
   .db 1,1,1,1,1,1,1,1,1,1,1,1,1,1,ENV_STOP
   .db 192,DUTY_ENV_STOP
   .db ENV_STOP
 
-Drum1_24:
+_Drum1_24:
   .db 5,15,17,19,ARP_TYPE_FIXED
   .db 5,4,3,3,2,2,1,1,0,ENV_STOP
   .db 0,ENV_STOP
   .db 0,DUTY_ENV_STOP
   .db 7,ENV_STOP
 
-Drum2_25:
+_Drum2_25:
   .db 5,11,13,15,ARP_TYPE_ABSOLUTE
   .db 4,3,2,1,0,ENV_STOP
   .db 0,ENV_STOP
   .db 0,DUTY_ENV_STOP
   .db ENV_STOP
 
-Drum3_26:
+_Drum3_26:
   .db 5,25,27,29,ARP_TYPE_FIXED
   .db 4,4,5,5,6,6,5,5,4,4,3,3,2,2,1,1,1,1,0,ENV_STOP
   .db 0,ENV_STOP
   .db 0,DUTY_ENV_STOP
   .db 0,1,2,3,4,5,6,7,8,ENV_STOP
 
-Triangle_On_27:
+_New_instrument_27:
+  .db 5,19,21,23,ARP_TYPE_ABSOLUTE
+  .db 12,10,6,4,3,4,5,8,10,8,5,3,3,ENV_STOP
+  .db 0,ENV_STOP
+  .db 0,DUTY_ENV_STOP
+  .db ENV_STOP
+
+_Triangle_On_28:
   .db 5,7,9,11,ARP_TYPE_ABSOLUTE
   .db 1,ENV_STOP
   .db 0,ENV_STOP
   .db 0,DUTY_ENV_STOP
   .db ENV_STOP
 
-silent_28:
+_New_instrument_29:
+  .db 5,7,9,25,ARP_TYPE_ABSOLUTE
+  .db 12,ENV_STOP
+  .db 0,ENV_STOP
+  .db 0,16,32,48,64,80,96,112,96,80,64,48,32,16,DUTY_ENV_LOOP,9
+  .db ENV_STOP
+
+silent_30:
   .db 5,7,9,11,ARP_TYPE_ABSOLUTE
   .db 0,ENV_STOP
   .db 0,ENV_STOP
@@ -301,6 +317,9 @@ _robot_adv:
   .dw _robot_adv_triangle
   .dw _robot_adv_noise
   .dw _robot_adv_dpcm
+  .dw _robot_adv_vrc6_square1
+  .dw _robot_adv_vrc6_square2
+  .dw _robot_adv_vrc6_saw
 
 _robot_adv_square1:
 _robot_adv_square1_loop:
@@ -347,19 +366,46 @@ _robot_adv_dpcm_loop:
   .db GOT
   .dw _robot_adv_dpcm_loop
 
+_robot_adv_vrc6_square1:
+_robot_adv_vrc6_square1_loop:
+  .db CAL,<(_robot_adv_vrc6_square1_0),>(_robot_adv_vrc6_square1_0)
+  .db CAL,<(_robot_adv_vrc6_square1_1),>(_robot_adv_vrc6_square1_1)
+  .db CAL,<(_robot_adv_vrc6_square1_2),>(_robot_adv_vrc6_square1_2)
+  .db CAL,<(_robot_adv_vrc6_square1_3),>(_robot_adv_vrc6_square1_3)
+  .db GOT
+  .dw _robot_adv_vrc6_square1_loop
+
+_robot_adv_vrc6_square2:
+_robot_adv_vrc6_square2_loop:
+  .db CAL,<(_robot_adv_vrc6_square2_0),>(_robot_adv_vrc6_square2_0)
+  .db CAL,<(_robot_adv_vrc6_square2_1),>(_robot_adv_vrc6_square2_1)
+  .db CAL,<(_robot_adv_vrc6_square2_2),>(_robot_adv_vrc6_square2_2)
+  .db CAL,<(_robot_adv_vrc6_square2_3),>(_robot_adv_vrc6_square2_3)
+  .db GOT
+  .dw _robot_adv_vrc6_square2_loop
+
+_robot_adv_vrc6_saw:
+_robot_adv_vrc6_saw_loop:
+  .db CAL,<(_robot_adv_vrc6_saw_0),>(_robot_adv_vrc6_saw_0)
+  .db CAL,<(_robot_adv_vrc6_saw_1),>(_robot_adv_vrc6_saw_1)
+  .db CAL,<(_robot_adv_vrc6_saw_2),>(_robot_adv_vrc6_saw_2)
+  .db CAL,<(_robot_adv_vrc6_saw_3),>(_robot_adv_vrc6_saw_3)
+  .db GOT
+  .dw _robot_adv_vrc6_saw_loop
+
 _robot_adv_square1_0:
-  .db STI,19,SL1,DS3,D3,C3,D3,SL4,C3,SL1,C3,STI,28,A0,STI,19
-  .db C3,STI,28,A0,STI,19,C3,C3,STI,28,SL2,A0,STI,19,SL1,D3,C3
-  .db B2,C3,SL4,B2,SL1,B2,STI,28,A0,STI,19,B2,STI,28,A0,STI,19
-  .db B2,B2,STI,28,SL2,A0,STI,19,SL1,C3,B2,A2,B2,SL8,A2,SL4,A2
+  .db STI,19,SL1,DS3,D3,C3,D3,SL4,C3,SL1,C3,STI,30,A0,STI,19
+  .db C3,STI,30,A0,STI,19,C3,C3,STI,30,SL2,A0,STI,19,SL1,D3,C3
+  .db B2,C3,SL4,B2,SL1,B2,STI,30,A0,STI,19,B2,STI,30,A0,STI,19
+  .db B2,B2,STI,30,SL2,A0,STI,19,SL1,C3,B2,A2,B2,SL8,A2,SL4,A2
   .db SL8,G2,SL1,DS3,D3,C3,B2,C3,B2,A2,G2
   .db RET
 
 _robot_adv_square1_1:
-  .db STI,19,SL1,DS3,D3,C3,D3,SL4,C3,SL1,C3,STI,28,A0,STI,19
-  .db C3,STI,28,A0,STI,19,C3,C3,STI,28,SL2,A0,STI,19,SL1,D3,C3
-  .db B2,C3,SL4,B2,SL1,B2,STI,28,A0,STI,19,B2,STI,28,A0,STI,19
-  .db B2,B2,STI,28,SL2,A0,STI,19,SL1,C3,B2,A2,B2,SL8,A2,SL4,A2
+  .db STI,19,SL1,DS3,D3,C3,D3,SL4,C3,SL1,C3,STI,30,A0,STI,19
+  .db C3,STI,30,A0,STI,19,C3,C3,STI,30,SL2,A0,STI,19,SL1,D3,C3
+  .db B2,C3,SL4,B2,SL1,B2,STI,30,A0,STI,19,B2,STI,30,A0,STI,19
+  .db B2,B2,STI,30,SL2,A0,STI,19,SL1,C3,B2,A2,B2,SL8,A2,SL4,A2
   .db SL8,G2,SL1,DS3,D3,C3,B2,C3,B2,C3,D3
   .db RET
 
@@ -376,18 +422,18 @@ _robot_adv_square1_3:
   .db RET
 
 _robot_adv_square2_0:
-  .db STI,19,SL1,G3,F3,DS3,F3,SL4,DS3,SL1,DS3,STI,28,A0,STI,19
-  .db DS3,STI,28,A0,STI,19,DS3,DS3,STI,28,SL2,A0,STI,19,SL1,F3
-  .db DS3,D3,DS3,SL4,D3,SL1,D3,STI,28,A0,STI,19,D3,STI,28,A0,STI,19
-  .db D3,D3,STI,28,SL2,A0,STI,19,SL1,DS3,D3,C3,D3,SL8,C3,SL4,FS3
+  .db STI,19,SL1,G3,F3,DS3,F3,SL4,DS3,SL1,DS3,STI,30,A0,STI,19
+  .db DS3,STI,30,A0,STI,19,DS3,DS3,STI,30,SL2,A0,STI,19,SL1,F3
+  .db DS3,D3,DS3,SL4,D3,SL1,D3,STI,30,A0,STI,19,D3,STI,30,A0,STI,19
+  .db D3,D3,STI,30,SL2,A0,STI,19,SL1,DS3,D3,C3,D3,SL8,C3,SL4,FS3
   .db SL8,G3,SL1,G3,F3,DS3,D3,DS3,D3,C3,B2
   .db RET
 
 _robot_adv_square2_1:
-  .db STI,19,SL1,G3,F3,DS3,F3,SL4,DS3,SL1,DS3,STI,28,A0,STI,19
-  .db DS3,STI,28,A0,STI,19,DS3,DS3,STI,28,SL2,A0,STI,19,SL1,F3
-  .db DS3,D3,DS3,SL4,D3,SL1,D3,STI,28,A0,STI,19,D3,STI,28,A0,STI,19
-  .db D3,D3,STI,28,SL2,A0,STI,19,SL1,DS3,D3,C3,D3,SL8,C3,SL4,A3
+  .db STI,19,SL1,G3,F3,DS3,F3,SL4,DS3,SL1,DS3,STI,30,A0,STI,19
+  .db DS3,STI,30,A0,STI,19,DS3,DS3,STI,30,SL2,A0,STI,19,SL1,F3
+  .db DS3,D3,DS3,SL4,D3,SL1,D3,STI,30,A0,STI,19,D3,STI,30,A0,STI,19
+  .db D3,D3,STI,30,SL2,A0,STI,19,SL1,DS3,D3,C3,D3,SL8,C3,SL4,A3
   .db SL8,B3,SL1,G3,F3,DS3,D3,DS3,D3,DS3,F3
   .db RET
 
@@ -404,57 +450,57 @@ _robot_adv_square2_3:
   .db RET
 
 _robot_adv_triangle_0:
-  .db STI,27,SL1,C3,STI,28,A0,STI,27,C3,STI,28,A0,STI,27,SL3,C3
-  .db STI,28,SL1,A0,STI,27,SL3,C3,STI,28,SL1,A0,STI,27,SL3,C3,STI,28
-  .db SL1,A0,STI,27,G3,STI,28,A0,STI,27,G3,STI,28,A0,STI,27
-  .db SL3,G3,STI,28,SL1,A0,STI,27,SL3,G3,STI,28,SL1,A0,STI,27
-  .db SL3,G3,STI,28,SL1,A0,STI,27,A3,STI,28,A0,STI,27,A3,STI,28
-  .db A0,STI,27,SL3,A3,STI,28,SL1,A0,STI,27,SL3,FS3,STI,28
-  .db SL1,A0,STI,27,SL3,FS3,STI,28,SL1,A0,STI,27,G3,STI,28
-  .db A0,STI,27,G3,STI,28,A0,STI,27,SL3,G3,STI,28,SL1,A0,STI,27
-  .db SL3,G3,STI,28,SL1,A0,STI,27,SL3,D3,STI,28,SL1,A0
+  .db STI,28,SL1,C3,STI,30,A0,STI,28,C3,STI,30,A0,STI,28,SL3,C3
+  .db STI,30,SL1,A0,STI,28,SL3,C3,STI,30,SL1,A0,STI,28,SL3,C3,STI,30
+  .db SL1,A0,STI,28,G3,STI,30,A0,STI,28,G3,STI,30,A0,STI,28
+  .db SL3,G3,STI,30,SL1,A0,STI,28,SL3,G3,STI,30,SL1,A0,STI,28
+  .db SL3,G3,STI,30,SL1,A0,STI,28,A3,STI,30,A0,STI,28,A3,STI,30
+  .db A0,STI,28,SL3,A3,STI,30,SL1,A0,STI,28,SL3,FS3,STI,30
+  .db SL1,A0,STI,28,SL3,FS3,STI,30,SL1,A0,STI,28,G3,STI,30
+  .db A0,STI,28,G3,STI,30,A0,STI,28,SL3,G3,STI,30,SL1,A0,STI,28
+  .db SL3,G3,STI,30,SL1,A0,STI,28,SL3,D3,STI,30,SL1,A0
   .db RET
 
 _robot_adv_triangle_1:
-  .db STI,27,SL1,C3,STI,28,A0,STI,27,C3,STI,28,A0,STI,27,SL3,C3
-  .db STI,28,SL1,A0,STI,27,SL3,C3,STI,28,SL1,A0,STI,27,SL3,C3,STI,28
-  .db SL1,A0,STI,27,G3,STI,28,A0,STI,27,G3,STI,28,A0,STI,27
-  .db SL3,G3,STI,28,SL1,A0,STI,27,SL3,G3,STI,28,SL1,A0,STI,27
-  .db SL3,G3,STI,28,SL1,A0,STI,27,A3,STI,28,A0,STI,27,A3,STI,28
-  .db A0,STI,27,SL3,A3,STI,28,SL1,A0,STI,27,SL3,FS3,STI,28
-  .db SL1,A0,STI,27,SL3,FS3,STI,28,SL1,A0,STI,27,G3,STI,28
-  .db A0,STI,27,G3,STI,28,A0,STI,27,SL3,G3,STI,28,SL1,A0,STI,27
-  .db SL3,G3,STI,28,SL1,A0,STI,27,SL3,D3,STI,28,SL1,A0
+  .db STI,28,SL1,C3,STI,30,A0,STI,28,C3,STI,30,A0,STI,28,SL3,C3
+  .db STI,30,SL1,A0,STI,28,SL3,C3,STI,30,SL1,A0,STI,28,SL3,C3,STI,30
+  .db SL1,A0,STI,28,G3,STI,30,A0,STI,28,G3,STI,30,A0,STI,28
+  .db SL3,G3,STI,30,SL1,A0,STI,28,SL3,G3,STI,30,SL1,A0,STI,28
+  .db SL3,G3,STI,30,SL1,A0,STI,28,A3,STI,30,A0,STI,28,A3,STI,30
+  .db A0,STI,28,SL3,A3,STI,30,SL1,A0,STI,28,SL3,FS3,STI,30
+  .db SL1,A0,STI,28,SL3,FS3,STI,30,SL1,A0,STI,28,G3,STI,30
+  .db A0,STI,28,G3,STI,30,A0,STI,28,SL3,G3,STI,30,SL1,A0,STI,28
+  .db SL3,G3,STI,30,SL1,A0,STI,28,SL3,D3,STI,30,SL1,A0
   .db RET
 
 _robot_adv_triangle_2:
-  .db STI,27,SL1,GS2,STI,28,A0,STI,27,GS2,STI,28,A0,STI,27
-  .db GS2,STI,28,A0,STI,27,GS2,STI,28,A0,STI,27,GS2,STI,28
-  .db A0,STI,27,GS2,STI,28,A0,STI,27,GS2,STI,28,A0,STI,27,GS2
-  .db STI,28,A0,STI,27,AS2,STI,28,A0,STI,27,AS2,STI,28,A0,STI,27
-  .db AS2,STI,28,A0,STI,27,AS2,STI,28,A0,STI,27,AS2,STI,28
-  .db A0,STI,27,AS2,STI,28,A0,STI,27,AS2,STI,28,A0,STI,27,AS2
-  .db STI,28,A0,STI,27,B2,STI,28,A0,STI,27,B2,STI,28,A0,STI,27
-  .db B2,STI,28,A0,STI,27,B2,STI,28,A0,STI,27,B2,STI,28,A0,STI,27
-  .db B2,STI,28,A0,STI,27,B2,STI,28,A0,STI,27,B2,STI,28,A0,STI,27
-  .db C3,STI,28,A0,STI,27,C3,STI,28,A0,STI,27,C3,STI,28,A0,STI,27
-  .db C3,STI,28,A0,STI,27,C3,STI,28,A0,STI,27,C3,STI,28,A0,STI,27
-  .db C3,STI,28,A0,STI,27,C3,STI,28,A0
+  .db STI,28,SL1,GS2,STI,30,A0,STI,28,GS2,STI,30,A0,STI,28
+  .db GS2,STI,30,A0,STI,28,GS2,STI,30,A0,STI,28,GS2,STI,30
+  .db A0,STI,28,GS2,STI,30,A0,STI,28,GS2,STI,30,A0,STI,28,GS2
+  .db STI,30,A0,STI,28,AS2,STI,30,A0,STI,28,AS2,STI,30,A0,STI,28
+  .db AS2,STI,30,A0,STI,28,AS2,STI,30,A0,STI,28,AS2,STI,30
+  .db A0,STI,28,AS2,STI,30,A0,STI,28,AS2,STI,30,A0,STI,28,AS2
+  .db STI,30,A0,STI,28,B2,STI,30,A0,STI,28,B2,STI,30,A0,STI,28
+  .db B2,STI,30,A0,STI,28,B2,STI,30,A0,STI,28,B2,STI,30,A0,STI,28
+  .db B2,STI,30,A0,STI,28,B2,STI,30,A0,STI,28,B2,STI,30,A0,STI,28
+  .db C3,STI,30,A0,STI,28,C3,STI,30,A0,STI,28,C3,STI,30,A0,STI,28
+  .db C3,STI,30,A0,STI,28,C3,STI,30,A0,STI,28,C3,STI,30,A0,STI,28
+  .db C3,STI,30,A0,STI,28,C3,STI,30,A0
   .db RET
 
 _robot_adv_triangle_3:
-  .db STI,27,SL1,GS2,STI,28,A0,STI,27,GS2,STI,28,A0,STI,27
-  .db GS2,STI,28,A0,STI,27,GS2,STI,28,A0,STI,27,GS2,STI,28
-  .db A0,STI,27,GS2,STI,28,A0,STI,27,GS2,STI,28,A0,STI,27,GS2
-  .db STI,28,A0,STI,27,AS2,STI,28,A0,STI,27,AS2,STI,28,A0,STI,27
-  .db AS2,STI,28,A0,STI,27,AS2,STI,28,A0,STI,27,AS2,STI,28
-  .db A0,STI,27,AS2,STI,28,A0,STI,27,AS2,STI,28,A0,STI,27,AS2
-  .db STI,28,A0,STI,27,B2,STI,28,A0,STI,27,B2,STI,28,A0,STI,27
-  .db B2,STI,28,A0,STI,27,B2,STI,28,A0,STI,27,B2,STI,28,A0,STI,27
-  .db B2,STI,28,A0,STI,27,B2,STI,28,A0,STI,27,B2,STI,28,A0,STI,27
-  .db C3,STI,28,A0,STI,27,C3,STI,28,A0,STI,27,C3,STI,28,A0,STI,27
-  .db C3,STI,28,A0,STI,27,C3,STI,28,A0,STI,27,C3,STI,28,A0,STI,27
-  .db C3,STI,28,A0,STI,27,C3,STI,28,A0
+  .db STI,28,SL1,GS2,STI,30,A0,STI,28,GS2,STI,30,A0,STI,28
+  .db GS2,STI,30,A0,STI,28,GS2,STI,30,A0,STI,28,GS2,STI,30
+  .db A0,STI,28,GS2,STI,30,A0,STI,28,GS2,STI,30,A0,STI,28,GS2
+  .db STI,30,A0,STI,28,AS2,STI,30,A0,STI,28,AS2,STI,30,A0,STI,28
+  .db AS2,STI,30,A0,STI,28,AS2,STI,30,A0,STI,28,AS2,STI,30
+  .db A0,STI,28,AS2,STI,30,A0,STI,28,AS2,STI,30,A0,STI,28,AS2
+  .db STI,30,A0,STI,28,B2,STI,30,A0,STI,28,B2,STI,30,A0,STI,28
+  .db B2,STI,30,A0,STI,28,B2,STI,30,A0,STI,28,B2,STI,30,A0,STI,28
+  .db B2,STI,30,A0,STI,28,B2,STI,30,A0,STI,28,B2,STI,30,A0,STI,28
+  .db C3,STI,30,A0,STI,28,C3,STI,30,A0,STI,28,C3,STI,30,A0,STI,28
+  .db C3,STI,30,A0,STI,28,C3,STI,30,A0,STI,28,C3,STI,30,A0,STI,28
+  .db C3,STI,30,A0,STI,28,C3,STI,30,A0
   .db RET
 
 _robot_adv_noise_0:
@@ -492,6 +538,116 @@ _robot_adv_dpcm_0:
   .db CS3,SL1,C3,SL3,C3,SL2,C3,SL1,CS3,CS3,CS3,CS3
   .db RET
 
+_robot_adv_vrc6_square1_0:
+  .db STI,27,SL1,DS3,D3,C3,D3,SL4,C3,SL1,C3,STI,30,A0,STI,27
+  .db C3,STI,30,A0,STI,27,C3,C3,STI,30,SL2,A0,STI,27,SL1,D3,C3
+  .db B2,C3,SL4,B2,SL1,B2,STI,30,A0,STI,27,B2,STI,30,A0,STI,27
+  .db B2,B2,STI,30,SL2,A0,STI,27,SL1,C3,B2,A2,B2,SL8,A2,SL4,A2
+  .db SL8,G2,SL1,DS3,D3,C3,B2,C3,B2,C3,D3
+  .db RET
+
+_robot_adv_vrc6_square1_1:
+  .db STI,27,SL1,DS3,D3,C3,D3,SL4,C3,SL1,C3,STI,30,A0,STI,27
+  .db C3,STI,30,A0,STI,27,C3,C3,STI,30,SL2,A0,STI,27,SL1,D3,C3
+  .db B2,C3,SL4,B2,SL1,B2,STI,30,A0,STI,27,B2,STI,30,A0,STI,27
+  .db B2,B2,STI,30,SL2,A0,STI,27,SL1,C3,B2,A2,B2,SL8,A2,SL4,A2
+  .db SL8,G2,SL1,DS3,D3,C3,B2,C3,B2,C3,D3
+  .db RET
+
+_robot_adv_vrc6_square1_2:
+  .db STI,27,SL1,AS2,C3,AS2,SL5,C3,SL1,C3,AS2,GS2,G2,F2,DS2,D2
+  .db C2,SL0,D2,SL1,C3,D3,C3,SL5,D3,SL1,D3,C3,B2,A2,B2,C3,D3,F3
+  .db SL0,DS3
+  .db RET
+
+_robot_adv_vrc6_square1_3:
+  .db STI,27,SL1,AS2,C3,AS2,SL5,C3,SL1,C3,AS2,C3,D3,DS3,F3,G3,AS3
+  .db SL0,F3,SL1,AS3,B3,AS3,SL5,B3,SL1,G4,F4,DS4,D4,C4,B3,A3,G3
+  .db SL0,DS3
+  .db RET
+
+_robot_adv_vrc6_square2_0:
+  .db STI,29,SL1,G3,F3,DS3,F3,SL4,DS3,SL1,DS3,STI,30,A0,STI,29
+  .db DS3,STI,30,A0,STI,29,DS3,DS3,STI,30,SL2,A0,STI,29,SL1,F3
+  .db DS3,D3,DS3,SL4,D3,SL1,D3,STI,30,A0,STI,29,D3,STI,30,A0,STI,29
+  .db D3,D3,STI,30,SL2,A0,STI,29,SL1,DS3,D3,C3,D3,SL8,C3,SL4,FS3
+  .db SL8,G3,SL1,G3,F3,DS3,D3,DS3,D3,C3,B2
+  .db RET
+
+_robot_adv_vrc6_square2_1:
+  .db STI,29,SL1,G3,F3,DS3,F3,SL4,DS3,SL1,DS3,STI,30,A0,STI,29
+  .db DS3,STI,30,A0,STI,29,DS3,DS3,STI,30,SL2,A0,STI,29,SL1,F3
+  .db DS3,D3,DS3,SL4,D3,SL1,D3,STI,30,A0,STI,29,D3,STI,30,A0,STI,29
+  .db D3,D3,STI,30,SL2,A0,STI,29,SL1,DS3,D3,C3,D3,SL8,C3,SL4,A3
+  .db SL8,B3,SL1,G3,F3,DS3,D3,DS3,D3,DS3,F3
+  .db RET
+
+_robot_adv_vrc6_square2_2:
+  .db STI,29,SL1,G3,GS3,G3,SL5,GS3,SL1,GS3,G3,F3,DS3,D3,C3,AS2
+  .db GS2,SL0,AS2,SL1,DS3,F3,DS3,SL5,F3,SL1,F3,DS3,D3,C3,D3,G2
+  .db A2,B2,SL0,C3
+  .db RET
+
+_robot_adv_vrc6_square2_3:
+  .db STI,29,SL1,G3,GS3,G3,SL5,GS3,SL1,GS3,G3,GS3,AS3,C4,D4,DS4
+  .db F4,SL0,D4,SL1,FS4,G4,FS4,SL5,G4,SL1,B4,A4,G4,F4,DS4,D4,C4
+  .db B3,SL0,C4
+  .db RET
+
+_robot_adv_vrc6_saw_0:
+  .db STI,27,SL1,C3,STI,30,A0,STI,27,C3,STI,30,A0,STI,27,SL3,C3
+  .db STI,30,SL1,A0,STI,27,SL3,C3,STI,30,SL1,A0,STI,27,SL3,C3,STI,30
+  .db SL1,A0,STI,27,G3,STI,30,A0,STI,27,G3,STI,30,A0,STI,27
+  .db SL3,G3,STI,30,SL1,A0,STI,27,SL3,G3,STI,30,SL1,A0,STI,27
+  .db SL3,G3,STI,30,SL1,A0,STI,27,A3,STI,30,A0,STI,27,A3,STI,30
+  .db A0,STI,27,SL3,A3,STI,30,SL1,A0,STI,27,SL3,FS3,STI,30
+  .db SL1,A0,STI,27,SL3,FS3,STI,30,SL1,A0,STI,27,G3,STI,30
+  .db A0,STI,27,G3,STI,30,A0,STI,27,SL3,G3,STI,30,SL1,A0,STI,27
+  .db SL3,G3,STI,30,SL1,A0,STI,27,SL3,D3,STI,30,SL1,A0
+  .db RET
+
+_robot_adv_vrc6_saw_1:
+  .db STI,27,SL1,C3,STI,30,A0,STI,27,C3,STI,30,A0,STI,27,SL3,C3
+  .db STI,30,SL1,A0,STI,27,SL3,C3,STI,30,SL1,A0,STI,27,SL3,C3,STI,30
+  .db SL1,A0,STI,27,G3,STI,30,A0,STI,27,G3,STI,30,A0,STI,27
+  .db SL3,G3,STI,30,SL1,A0,STI,27,SL3,G3,STI,30,SL1,A0,STI,27
+  .db SL3,G3,STI,30,SL1,A0,STI,27,A3,STI,30,A0,STI,27,A3,STI,30
+  .db A0,STI,27,SL3,A3,STI,30,SL1,A0,STI,27,SL3,FS3,STI,30
+  .db SL1,A0,STI,27,SL3,FS3,STI,30,SL1,A0,STI,27,G3,STI,30
+  .db A0,STI,27,G3,STI,30,A0,STI,27,SL3,G3,STI,30,SL1,A0,STI,27
+  .db SL3,G3,STI,30,SL1,A0,STI,27,SL3,D3,STI,30,SL1,A0
+  .db RET
+
+_robot_adv_vrc6_saw_2:
+  .db STI,27,SL1,GS2,STI,30,A0,STI,27,GS2,STI,30,A0,STI,27
+  .db GS2,STI,30,A0,STI,27,GS2,STI,30,A0,STI,27,GS2,STI,30
+  .db A0,STI,27,GS2,STI,30,A0,STI,27,GS2,STI,30,A0,STI,27,GS2
+  .db STI,30,A0,STI,27,AS2,STI,30,A0,STI,27,AS2,STI,30,A0,STI,27
+  .db AS2,STI,30,A0,STI,27,AS2,STI,30,A0,STI,27,AS2,STI,30
+  .db A0,STI,27,AS2,STI,30,A0,STI,27,AS2,STI,30,A0,STI,27,AS2
+  .db STI,30,A0,STI,27,B2,STI,30,A0,STI,27,B2,STI,30,A0,STI,27
+  .db B2,STI,30,A0,STI,27,B2,STI,30,A0,STI,27,B2,STI,30,A0,STI,27
+  .db B2,STI,30,A0,STI,27,B2,STI,30,A0,STI,27,B2,STI,30,A0,STI,27
+  .db C3,STI,30,A0,STI,27,C3,STI,30,A0,STI,27,C3,STI,30,A0,STI,27
+  .db C3,STI,30,A0,STI,27,C3,STI,30,A0,STI,27,C3,STI,30,A0,STI,27
+  .db C3,STI,30,A0,STI,27,C3,STI,30,A0
+  .db RET
+
+_robot_adv_vrc6_saw_3:
+  .db STI,27,SL1,GS2,STI,30,A0,STI,27,GS2,STI,30,A0,STI,27
+  .db GS2,STI,30,A0,STI,27,GS2,STI,30,A0,STI,27,GS2,STI,30
+  .db A0,STI,27,GS2,STI,30,A0,STI,27,GS2,STI,30,A0,STI,27,GS2
+  .db STI,30,A0,STI,27,AS2,STI,30,A0,STI,27,AS2,STI,30,A0,STI,27
+  .db AS2,STI,30,A0,STI,27,AS2,STI,30,A0,STI,27,AS2,STI,30
+  .db A0,STI,27,AS2,STI,30,A0,STI,27,AS2,STI,30,A0,STI,27,AS2
+  .db STI,30,A0,STI,27,B2,STI,30,A0,STI,27,B2,STI,30,A0,STI,27
+  .db B2,STI,30,A0,STI,27,B2,STI,30,A0,STI,27,B2,STI,30,A0,STI,27
+  .db B2,STI,30,A0,STI,27,B2,STI,30,A0,STI,27,B2,STI,30,A0,STI,27
+  .db C3,STI,30,A0,STI,27,C3,STI,30,A0,STI,27,C3,STI,30,A0,STI,27
+  .db C3,STI,30,A0,STI,27,C3,STI,30,A0,STI,27,C3,STI,30,A0,STI,27
+  .db C3,STI,30,A0,STI,27,C3,STI,30,A0
+  .db RET
+
 _k466:
   .db 0
   .db 7
@@ -500,6 +656,9 @@ _k466:
   .dw _k466_square1
   .dw _k466_square2
   .dw _k466_triangle
+  .dw 0
+  .dw 0
+  .dw 0
   .dw 0
   .dw 0
 
@@ -543,7 +702,7 @@ _k466_triangle_loop:
   .dw _k466_triangle_loop
 
 _k466_square1_0:
-  .db STI,28,SL3,A0,STI,0,GS4,C5,GS4,F4,C4,CS4,GS3,AS3,G4,AS4
+  .db STI,30,SL3,A0,STI,0,GS4,C5,GS4,F4,C4,CS4,GS3,AS3,G4,AS4
   .db G4,E4,C4,CS4,AS3
   .db RET
 
@@ -616,7 +775,7 @@ _k466_square2_7:
   .db RET
 
 _k466_triangle_0:
-  .db STI,28,SLL,24,A0,STI,0,SLC,F3,E3
+  .db STI,30,SLL,24,A0,STI,0,SLC,F3,E3
   .db RET
 
 _k466_triangle_1:
@@ -628,7 +787,7 @@ _k466_triangle_2:
   .db RET
 
 _k466_triangle_3:
-  .db STI,28,SLL,48,A0
+  .db STI,30,SLL,48,A0
   .db RET
 
 _k11:
@@ -640,6 +799,9 @@ _k11:
   .dw _k11_square2
   .dw _k11_triangle
   .dw _k11_noise
+  .dw 0
+  .dw 0
+  .dw 0
   .dw 0
 
 _k11_square1:
@@ -804,6 +966,9 @@ _soler42:
   .dw _soler42_square2
   .dw _soler42_triangle
   .dw _soler42_noise
+  .dw 0
+  .dw 0
+  .dw 0
   .dw 0
 
 _soler42_square1:
@@ -974,7 +1139,7 @@ _soler42_square1_13:
   .db RET
 
 _soler42_square2_0:
-  .db STI,28,SL0,A0,STI,9,SL4,D3,SL2,D3,SL1,AS2,D3,SL0,G3,SL4
+  .db STI,30,SL0,A0,STI,9,SL4,D3,SL2,D3,SL1,AS2,D3,SL0,G3,SL4
   .db D3,SL2,D3,SL1,AS2,D3,SL0,G3,SL4,D3,SL2,D3,SL1,AS2,D3,SL8
   .db G3,SL4,D3,SL8,D3,SL4,C3
   .db RET
@@ -1147,6 +1312,9 @@ _antagonist:
   .dw _antagonist_triangle
   .dw 0
   .dw 0
+  .dw 0
+  .dw 0
+  .dw 0
 
 _antagonist_square1:
 _antagonist_square1_loop:
@@ -1209,7 +1377,7 @@ _antagonist_square2_0:
   .db RET
 
 _antagonist_square2_1:
-  .db STI,28,SLL,64,A0
+  .db STI,30,SLL,64,A0
   .db RET
 
 _antagonist_square2_2:
@@ -1218,7 +1386,7 @@ _antagonist_square2_2:
   .db RET
 
 _antagonist_square2_3:
-  .db STI,28,SL8,A0,STI,13,SL2,G2,FS2,G2,C3,SL8,DS3,F3,SL0,D3,SL2
+  .db STI,30,SL8,A0,STI,13,SL2,G2,FS2,G2,C3,SL8,DS3,F3,SL0,D3,SL2
   .db G2,FS2,G2,B2,SL8,G3
   .db RET
 
@@ -1251,6 +1419,9 @@ _arps:
   .dw _arps_square1
   .dw _arps_square2
   .dw _arps_triangle
+  .dw 0
+  .dw 0
+  .dw 0
   .dw 0
   .dw 0
 
@@ -1311,6 +1482,9 @@ _noise_arps:
   .dw 0
   .dw _noise_arps_noise
   .dw 0
+  .dw 0
+  .dw 0
+  .dw 0
 
 _noise_arps_noise:
 _noise_arps_noise_loop:
@@ -1334,6 +1508,9 @@ _sfx_shot:
   .dw 0
   .dw _sfx_shot_noise
   .dw 0
+  .dw 0
+  .dw 0
+  .dw 0
 
 _sfx_shot_noise:
   .db CAL,<(_sfx_shot_noise_0),>(_sfx_shot_noise_0)
@@ -1346,6 +1523,9 @@ _sfx_laser:
   .db 0, 1
   .db 0, 1
   .dw _sfx_laser_square1
+  .dw 0
+  .dw 0
+  .dw 0
   .dw 0
   .dw 0
   .dw 0
@@ -1366,6 +1546,9 @@ _sfx_dpcm:
   .dw 0
   .dw 0
   .dw _sfx_dpcm_dpcm
+  .dw 0
+  .dw 0
+  .dw 0
 
 _sfx_dpcm_dpcm:
   .db CAL,<(_sfx_dpcm_dpcm_0),>(_sfx_dpcm_dpcm_0)
@@ -1382,6 +1565,9 @@ _sfx_zap:
   .dw 0
   .dw _sfx_zap_noise
   .dw 0
+  .dw 0
+  .dw 0
+  .dw 0
 
 _sfx_zap_noise:
   .db CAL,<(_sfx_zap_noise_0),>(_sfx_zap_noise_0)
@@ -1397,6 +1583,9 @@ _sfx_collide:
   .dw 0
   .dw 0
   .dw _sfx_collide_noise
+  .dw 0
+  .dw 0
+  .dw 0
   .dw 0
 
 _sfx_collide_noise:
