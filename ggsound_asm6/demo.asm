@@ -7,7 +7,7 @@ include "ggsound.inc"
 ;iNES header
 ;****************************************************************
 .byte "NES",$1a
-.byte $01 ; 1 PRG-ROM block
+.byte $02 ; 1 PRG-ROM block
 .byte $01 ; 1 CHR-ROM block
 ; ROM control bytes: Horizontal mirroring, no SRAM
 ; or trainer, Mapper 024 = $18
@@ -47,10 +47,13 @@ include "ppu.asm"
 include "controller.asm"
 include "ggsound.asm"
 include "track_data.inc"
+.pad $C000
+
 .base $C000
 .align 64
 include "track_dpcm.inc"
 
+.pad $E000
 ;****************************************************************
 ;Data used for demo
 ;****************************************************************
