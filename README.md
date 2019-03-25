@@ -495,7 +495,7 @@ or playback will be incorrect.
 top of ggsound.inc.
 * To specify VRC6b instead of VRC6a, uncomment the FEATURE_VRC6_REV_B = 1
 at the top of ggsound.inc.
-* To entirely disable VRC6, comment out FEATURE_VRC6 = 1 at the of ggsound.inc.
+* To entirely disable VRC6, comment out FEATURE_VRC6 = 1 at the top of ggsound.inc.
 * To disable DPCM from ft_txt_to_asm.py, just don't use any dpcm in your song
 and no dpcm streams will be exported.
 * To disable arpeggios in ft_txt_to_asm.py is required if you are
