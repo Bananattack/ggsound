@@ -51,6 +51,7 @@ heard in professional NES games from the 80's and 90's. It
 currently supports:
 
 - Square 1, 2, Triangle, Noise, and DPCM channels
+- VRC6 expansion with Square 1, 2 and Saw channels
 - Volume, Arpeggio, Pitch and Duty envelopes
 - All three arpeggio types are supported.
 - Hi-Pitch envelopes are NOT supported
@@ -69,6 +70,7 @@ unique patterns) command
 - 128 sound effects
 
 # Credits:
+* Andrew G. Crowell - Modifications to the GGSound driver to add optional VRC6 expansion support.
 * MotZilla - For testing a very early version of the engine.
 * zxdplay - For using GGSound in his excellent game, StarKeeper.
 * jsr - For enabling me to work with the FamiTracker code and
@@ -480,16 +482,27 @@ any of the demo programs, you will also have to modify demo.asm
 to use constants that point to the indices of the two sfx you
 wish to demo.
 
-## Disabling features:
+## Configuring features:
 
-DPCM and arpeggio support can be disabled. To disable DPCM,
-comment out FEATURE_DPCM = 1 at the top of ggsound.inc. To
-disable arpeggios, comment out FEATURE_ARPEGGIOS = 1 at the
+DPCM, VRC6 and arpeggio support are all optional features.
+Their behaviour can be configured by changing settings near
+the top of ggsound.inc. The format of the tracks exported from
+ft_txt_to_asm must match the feature set enabled in ggsound.inc
+or playback will be incorrect.
+
+* To disable DPCM, comment out FEATURE_DPCM = 1 at the top of ggsound.inc.
+* To disable arpeggios, comment out FEATURE_ARPEGGIOS = 1 at the
 top of ggsound.inc.
-
-To disable DPCM from ft_txt_to_asm.py, just don't use any
-dpcm in your song and no dpcm streams will be exported. To
-disable arpeggios in ft_txt_to_asm.py is required if you are
+* To specify VRC6b instead of VRC6a, uncomment the FEATURE_VRC6_REV_B = 1
+at the top of ggsound.inc.
+* To entirely disable VRC6, comment out FEATURE_VRC6 = 1 at the of ggsound.inc.
+* To disable DPCM from ft_txt_to_asm.py, just don't use any dpcm in your song
+and no dpcm streams will be exported.
+* To disable arpeggios in ft_txt_to_asm.py is required if you are
 disabling it in ggsound itself. Change ARPEGGIOS_ENABLED to
 False within ft_txt_to_asm.py to avoid exporting any arpeggio
 data or opcodes.
+* To disable VRC6 from ft_txt_to_asm.py, just dont enable the
+VRC6 expansion in your song. Then the VRC6 channels and instruments
+won't be used. (Be sure to disable VRC6 playback if your soundtrack doesn't use it)
+
